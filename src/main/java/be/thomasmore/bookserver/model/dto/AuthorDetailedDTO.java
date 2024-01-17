@@ -11,5 +11,6 @@ import java.util.Collection;
 public class AuthorDetailedDTO {
     private int id;
     private String name;
+    private String description;
     private Collection<BookDTO> books;
 }
