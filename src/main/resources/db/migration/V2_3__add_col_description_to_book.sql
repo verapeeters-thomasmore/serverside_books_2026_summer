@@ -1,0 +1,1 @@
+alter table book add column description varchar(255);

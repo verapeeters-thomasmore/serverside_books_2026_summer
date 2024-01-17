@@ -25,6 +25,9 @@ public class Book {
     @NotNull
     private String title;
 
+    @Column(length=1024)
+    private String description;
+
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Author> authors;
 }

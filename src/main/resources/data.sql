@@ -1,17 +1,22 @@
-insert into BOOK (TITLE)
-values ('Oryx and Crake'); /*1*/
+insert into BOOK (TITLE, DESCRIPTION)
+values ('Oryx and Crake',
+        'MaddAddam is a serie of 3 dystopian science-fiction novels that deals with extreme genetic engineering.'); /*1*/
 
-insert into BOOK (TITLE)
-values ('The year of the flood');/*2*/
+insert into BOOK (TITLE, DESCRIPTION)
+values ('The year of the flood',
+        'MaddAddam is a serie of 3 dystopian science-fiction novels that deals with extreme genetic engineering.');/*2*/
 
-insert into BOOK (TITLE)
-values ('MaddAddam');/*3*/
+insert into BOOK (TITLE, DESCRIPTION)
+values ('MaddAddam',
+        'MaddAddam is a serie of 3 dystopian science-fiction novels that deals with extreme genetic engineering.');/*3*/
 
-insert into BOOK (TITLE)
-values ('1Q84');/*4*/
+insert into BOOK (TITLE, DESCRIPTION)
+values ('1Q84',
+        'Set in 1984 in Tokyo, the story concerns an assassin who stumbles upon an alternate world she refers to as 1Q84. There, she becomes embroiled in a conspiracy involving an abusive religious cult.');/*4*/
 
-insert into BOOK (TITLE)
-values ('De opwindvogelkronieken');/*5*/
+insert into BOOK (TITLE, DESCRIPTION)
+values ('De opwindvogelkronieken',
+        'Novel about Toru, a bored young man living a basic life in Tokyo. When Toru’s daily routines are interrupted by increasingly odd and chaotic events, he must undergo a metaphysical journey that tests the limits of free will and corporeality. ');/*5*/
 
 insert into BOOK (TITLE)
 values ('Design Patterns');/*6*/
