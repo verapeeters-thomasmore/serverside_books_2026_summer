@@ -21,6 +21,7 @@ public class AuthorControllerGetOneAuthorTest extends AbstractIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.name").value("Thomas Mann"))
+                .andExpect(jsonPath("$.description").value("Description Thomas Mann"))
                 .andExpect(jsonPath("$.books").exists())
                 .andExpect(jsonPath("$.books").isEmpty());
     }
