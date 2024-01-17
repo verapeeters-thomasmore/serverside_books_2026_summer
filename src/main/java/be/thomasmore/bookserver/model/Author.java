@@ -28,6 +28,8 @@ public class Author {
     @Column(length = 1024)
     private String description;
 
+    private String country;
+
     @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
     private Set<Book> books;
 
