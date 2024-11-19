@@ -91,6 +91,26 @@
 			"response": []
 		},
 		{
+			"name": "get 1 unexisting author (ERROR)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/author/555",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"author",
+						"555"
+					]
+				},
+				"description": "geeft 1 book uit de database (met opgegeven id). \ngeen authentication nodig."
+			},
+			"response": []
+		},
+		{
 			"name": "unexisting request (ERROR)",
 			"request": {
 				"method": "GET",
