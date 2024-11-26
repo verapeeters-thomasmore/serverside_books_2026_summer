@@ -29,10 +29,6 @@ public class Book {
     @Max(value = 200, message = "price should not be greater than 200")
     Integer priceInEur;
 
-    //todo: clean up (with flyway)
-    private String author = ""; //this is not normalized but I don't care for this example
-
-
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Author> authors;
 }
