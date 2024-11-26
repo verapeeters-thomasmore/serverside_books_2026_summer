@@ -76,3 +76,7 @@ insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID)
 values (select id from BOOK where title= 'Clean code',
            select id from AUTHOR where name = 'Robert C Martin');
 
+insert into SERIE(NAME) values ('Oryx and Crake');
+insert into SERIE(NAME) values ('Harry Potter');
+insert into SERIE(NAME) values ('In de ban van de Ring');
+
