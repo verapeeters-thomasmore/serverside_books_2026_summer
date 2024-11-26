@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "732e0350-e0b0-49ce-97df-5b3fd17f7e05",
+		"_postman_id": "ac6c8c14-aa4f-4aa8-90e0-fea1f2fcb462",
 		"name": "Books",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "13494213"
@@ -161,6 +161,45 @@
 					"path": [
 						"api",
 						"authors",
+						"2"
+					]
+				},
+				"description": "geeft 1 book uit de database (met opgegeven id). \ngeen authentication nodig."
+			},
+			"response": []
+		},
+		{
+			"name": "list all series",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/series",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"series"
+					]
+				},
+				"description": "geeft lijst van  alle authors in de database. \ngeen authentication nodig."
+			},
+			"response": []
+		},
+		{
+			"name": "get 1 serie",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/series/2",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"series",
 						"2"
 					]
 				},
