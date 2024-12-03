@@ -20,6 +20,7 @@ public class BookControllerGetOneBookTest extends AbstractIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.title").value("Test Automation"))
+                .andExpect(jsonPath("$.description").value("Test Automation Description"))
                 .andExpect(jsonPath("$.authors").exists())
                 .andExpect(jsonPath("$.authors").isEmpty());
     }
