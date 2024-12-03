@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ac6c8c14-aa4f-4aa8-90e0-fea1f2fcb462",
+		"_postman_id": "49c0d38b-aec9-49d0-b5a3-ad27d4d67e54",
 		"name": "Books",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "13494213"
@@ -460,6 +460,51 @@
 						"api",
 						"books",
 						"7",
+						"authors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create author",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-XSRF-TOKEN",
+						"value": "{{xsrf-token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n    \"name\":\"Hannah Arendt\", \r\n    \"description\": \"Hannah Arendt (1906–1975) was een Duitse filosofe en politiek theoreticus\", \r\n    \"country\": \"Duitsland\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/authors",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
 						"authors"
 					]
 				}
