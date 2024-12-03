@@ -28,14 +28,17 @@ public class BookControllerCreateTest extends AbstractIntegrationTest {
     @WithMockUser
     public void createBook() throws Exception {
         final String BOOK_TITLE = "It is simple to create a book";
+        final String BOOK_DESCRIPTION = "simple description";
         BookDetailedDTO newBookDto = BookDetailedDTO.builder()
                 .title(BOOK_TITLE)
+                .description(BOOK_DESCRIPTION)
                 .build();
 
         mockMvc.perform(getMockRequestPost("/api/books/", newBookDto))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.title").value(BOOK_TITLE))
+                .andExpect(jsonPath("$.description").value(BOOK_DESCRIPTION))
                 .andExpect(jsonPath("$.authors").isEmpty());
 
         Book loadedBook = bookRepository.findByTitle(BOOK_TITLE).orElseThrow();
