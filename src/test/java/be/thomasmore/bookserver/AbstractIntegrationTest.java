@@ -49,5 +49,11 @@ public abstract class AbstractIntegrationTest {
                 .content(this.mapper.writeValueAsString(dto));
     }
 
+    protected MockHttpServletRequestBuilder getMockRequestDelete(String url, Integer id)  {
+        return MockMvcRequestBuilders.delete(url, id)
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON);
+    }
+
 }
 
