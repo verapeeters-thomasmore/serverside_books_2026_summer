@@ -2,6 +2,7 @@ package be.thomasmore.bookserver.controllers;
 
 import be.thomasmore.bookserver.model.dto.AuthorDTO;
 import be.thomasmore.bookserver.model.dto.AuthorDetailedDTO;
+import be.thomasmore.bookserver.model.dto.BookDetailedDTO;
 import be.thomasmore.bookserver.services.AuthorService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -43,5 +44,16 @@ public class AuthorController {
     public AuthorDetailedDTO create(@Valid @RequestBody AuthorDetailedDTO authorDTO) {
         log.info("##### create author");
         return authorService.create(authorDTO);
+    }
+
+    @Operation(summary = "edit existing author in the database.",
+            description = "The books are <b>not</b> updated in the new author.</br>" +
+                    "Use PUT api/books/{id}/authors to update those. </br>" +
+                    "</br>" +
+                    "Returns updated author. ")
+    @PutMapping("{id}")
+    public AuthorDetailedDTO edit(@PathVariable int id, @RequestBody AuthorDetailedDTO authorDto) {
+        log.info(String.format("##### edit author %d", id));
+        return authorService.edit(id, authorDto);
     }
 }

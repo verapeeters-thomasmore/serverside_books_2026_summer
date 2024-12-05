@@ -45,4 +45,19 @@ public class AuthorService {
         final Author author = authorDetailedDTOConverter.convertToEntity(authorDto);
         return authorDetailedDTOConverter.convertToDto(authorRepository.save(author));
     }
+
+    public AuthorDetailedDTO edit(int id, AuthorDetailedDTO authorDto) {
+        if (authorDto.getId() != id)
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    String.format("id in author (%d) does not match id in url (%d).", authorDto.getId(), id));
+
+        Optional<Author> authorFromDb = authorRepository.findById(id);
+        if (authorFromDb.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    String.format("Author with id %d not found.", id));
+
+        //overwrite fields present in authorDto - relations are not touched
+        Author authorSaved = authorRepository.save(authorDetailedDTOConverter.convertToEntity(authorDto, authorFromDb.get()));
+        return authorDetailedDTOConverter.convertToDto(authorSaved);
+    }
 }
