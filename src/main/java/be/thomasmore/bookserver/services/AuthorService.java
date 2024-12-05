@@ -41,4 +41,8 @@ public class AuthorService {
         return authorDetailedDTOConverter.convertToDto(author.get());
     }
 
+    public AuthorDetailedDTO create(AuthorDetailedDTO authorDto) {
+        final Author author = authorDetailedDTOConverter.convertToEntity(authorDto);
+        return authorDetailedDTOConverter.convertToDto(authorRepository.save(author));
+    }
 }
