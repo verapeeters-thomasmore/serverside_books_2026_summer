@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "49c0d38b-aec9-49d0-b5a3-ad27d4d67e54",
+		"_postman_id": "a0bc242f-c3b5-4b5b-b877-3667a700039b",
 		"name": "Books",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "13494213"
@@ -506,6 +506,40 @@
 					"path": [
 						"api",
 						"authors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "edit author 7",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-XSRF-TOKEN",
+						"value": "{{xsrf-token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"id\":7, \"name\":\"aaaaa\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/authors/7",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"authors",
+						"7"
 					]
 				}
 			},
