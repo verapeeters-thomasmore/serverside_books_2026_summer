@@ -4,12 +4,10 @@ import be.thomasmore.bookserver.model.dto.AuthorDTO;
 import be.thomasmore.bookserver.model.dto.AuthorDetailedDTO;
 import be.thomasmore.bookserver.services.AuthorService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/authors")
@@ -37,4 +35,13 @@ public class AuthorController {
         return authorService.findOne(id);
     }
 
+    @Operation(summary = "create a new author in the database.",
+            description = "Returns new author (containing id from database). </br>" +
+                    "The name of the new author must be unique (case insensitive). </br>" +
+                    "The name of the author should never be empty or blank. </br>")
+    @PostMapping("")
+    public AuthorDetailedDTO create(@Valid @RequestBody AuthorDetailedDTO authorDTO) {
+        log.info("##### create author");
+        return authorService.create(authorDTO);
+    }
 }

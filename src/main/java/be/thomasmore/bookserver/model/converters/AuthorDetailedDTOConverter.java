@@ -19,4 +19,14 @@ public class AuthorDetailedDTOConverter {
     public AuthorDetailedDTO convertToDto(Author author) {
         return modelMapper.map(author, AuthorDetailedDTO.class);
     }
+
+
+    /**
+     * @param authorDto - authorDto.books should not contain any values.
+     *                  The relation between books and authors has to be updated via the book resource.
+     * @return the author entity object - ready to save in the database
+     */
+    public Author convertToEntity(AuthorDetailedDTO authorDto) {
+        return modelMapper.map(authorDto, Author.class);
+    }
 }
