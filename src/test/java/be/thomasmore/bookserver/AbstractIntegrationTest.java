@@ -41,6 +41,13 @@ public abstract class AbstractIntegrationTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .content(this.mapper.writeValueAsString(dto));
     }
+    protected <T> MockHttpServletRequestBuilder getMockRequestPut(String url, T dto) throws JsonProcessingException {
+        return MockMvcRequestBuilders.put(url)
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(this.mapper.writeValueAsString(dto));
+    }
 
 }
 
