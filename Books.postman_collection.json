@@ -544,6 +544,31 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "delete author 7",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-XSRF-TOKEN",
+						"value": "{{xsrf-token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/api/authors/7",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"authors",
+						"7"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"auth": {

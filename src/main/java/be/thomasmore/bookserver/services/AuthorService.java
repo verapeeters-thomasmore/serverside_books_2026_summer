@@ -6,7 +6,6 @@ import be.thomasmore.bookserver.model.converters.AuthorDetailedDTOConverter;
 import be.thomasmore.bookserver.model.dto.AuthorDTO;
 import be.thomasmore.bookserver.model.dto.AuthorDetailedDTO;
 import be.thomasmore.bookserver.repositories.AuthorRepository;
-import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -59,5 +58,14 @@ public class AuthorService {
         //overwrite fields present in authorDto - relations are not touched
         Author authorSaved = authorRepository.save(authorDetailedDTOConverter.convertToEntity(authorDto, authorFromDb.get()));
         return authorDetailedDTOConverter.convertToDto(authorSaved);
+    }
+
+    public void delete(int id) {
+        Optional<Author> authorFromDb = authorRepository.findById(id);
+        if (authorFromDb.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    String.format("Author with id %d not found.", id));
+
+        authorRepository.deleteById(id);
     }
 }
