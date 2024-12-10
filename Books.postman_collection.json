@@ -386,6 +386,74 @@
 			"response": []
 		},
 		{
+			"name": "edit book 7 existing title",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-XSRF-TOKEN",
+						"value": "{{xsrf-token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"id\":7, \"title\":\"Oryx and Crake\",   \"isbn\": \"1234567\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/books/7",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"books",
+						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "edit book 7 existing title case insenstive",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-XSRF-TOKEN",
+						"value": "{{xsrf-token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"id\":7, \"title\":\"oryx and crake\",   \"isbn\": \"1234567\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/books/7",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"books",
+						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "delete book 7",
 			"request": {
 				"method": "DELETE",
@@ -492,6 +560,51 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{  \r\n    \"name\":\"Hannah Arendt\", \r\n    \"description\": \"Hannah Arendt (1906–1975) was een Duitse filosofe en politiek theoreticus\", \r\n    \"country\": \"Duitsland\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/authors",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"authors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create author empty name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-XSRF-TOKEN",
+						"value": "{{xsrf-token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n    \"name\":\"\", \r\n    \"description\": \"Hannah Arendt (1906–1975) was een Duitse filosofe en politiek theoreticus\", \r\n    \"country\": \"Duitsland\"\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
