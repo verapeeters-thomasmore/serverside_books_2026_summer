@@ -61,6 +61,10 @@ public class AuthorController {
         return authorService.edit(id, authorDto);
     }
 
+    @Operation(summary = "delete existing author from the database.",
+            description = "If the author is still associated with books, the author cannot be deleted. </br>" +
+                    "In that case an Internal Server Error is thrown. </br>" +
+                    "Also if the author does not exist, an Internal Server Error is thrown.  </br>" )
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
