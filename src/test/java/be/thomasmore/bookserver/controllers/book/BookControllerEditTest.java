@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
@@ -74,6 +76,69 @@ public class BookControllerEditTest extends AbstractIntegrationTest {
         mockMvc.perform(getMockRequestPut("/api/books/55", editBookDto))
                 .andExpect(status().isNotFound())
                 .andReturn();
+    }
+
+    @Test
+    @ExceptionHandler
+    @WithMockUser
+    public void editBook_titleHasToBeUnique() throws Exception {
+        final int ID_OF_EDITED_BOOK = 1;
+        final String ORIGINAL_TITLE_OF_BOOK_1 = "Test Automation";
+        final String TITLE_OF_BOOK_2 = "REST API Automation Testing from Scratch";
+        BookDetailedDTO editBookDto = BookDetailedDTO.builder()
+                .id(ID_OF_EDITED_BOOK)
+                .title(TITLE_OF_BOOK_2) // title of book 2
+                .build();
+
+        final MvcResult mvcResult = mockMvc.perform(getMockRequestPut("/api/books/" + ID_OF_EDITED_BOOK, editBookDto))
+                .andExpect(status().isInternalServerError())
+                .andReturn();
+        assertThat(mvcResult.getResponse().getErrorMessage()).isEqualTo("Another book already exists with title " + TITLE_OF_BOOK_2 + ".");
+
+        Book loadedBook = bookRepository.findById(ID_OF_EDITED_BOOK).orElseThrow();
+        assertThat(loadedBook.getTitle()).isEqualTo(ORIGINAL_TITLE_OF_BOOK_1);
+    }
+
+    @Test
+    @ExceptionHandler
+    @WithMockUser
+    public void editBook_withUnchangedTitle() throws Exception {
+        final int ID_OF_EDITED_BOOK = 1;
+        final String TITLE_OF_BOOK_1 = "Test Automation";
+        final String NEW_DESCRIPTION = "NEW DESCRIPTION";
+        BookDetailedDTO editBookDto = BookDetailedDTO.builder()
+                .id(ID_OF_EDITED_BOOK)
+                .title(TITLE_OF_BOOK_1)  // its own title
+                .description(NEW_DESCRIPTION)
+                .build();
+
+        mockMvc.perform(getMockRequestPut("/api/books/" + ID_OF_EDITED_BOOK, editBookDto))
+                .andExpect(status().isOk());
+
+        Book loadedBook = bookRepository.findById(ID_OF_EDITED_BOOK).orElseThrow();
+        assertThat(loadedBook.getTitle()).isEqualTo(TITLE_OF_BOOK_1);
+        assertThat(loadedBook.getDescription()).isEqualTo(NEW_DESCRIPTION);
+    }
+
+    @Test
+    @ExceptionHandler
+    @WithMockUser
+    public void editBook_titleHasToBeUniqueCaseInsensitive() throws Exception {
+        final int ID_OF_EDITED_BOOK = 1;
+        final String ORIGINAL_TITLE_OF_BOOK_1 = "Test Automation";
+        final String TITLE_OF_BOOK_2 = "rest api automation testing from scratch";
+        BookDetailedDTO editBookDto = BookDetailedDTO.builder()
+                .id(ID_OF_EDITED_BOOK)
+                .title(TITLE_OF_BOOK_2) // title of book 2
+                .build();
+
+        final MvcResult mvcResult = mockMvc.perform(getMockRequestPut("/api/books/" + ID_OF_EDITED_BOOK, editBookDto))
+                .andExpect(status().isInternalServerError())
+                .andReturn();
+        assertThat(mvcResult.getResponse().getErrorMessage()).isEqualTo("Another book already exists with title " + TITLE_OF_BOOK_2 + ".");
+
+        Book loadedBook = bookRepository.findById(ID_OF_EDITED_BOOK).orElseThrow();
+        assertThat(loadedBook.getTitle()).isEqualTo(ORIGINAL_TITLE_OF_BOOK_1);
     }
 
     @Test

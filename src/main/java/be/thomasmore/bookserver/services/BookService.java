@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -63,7 +62,7 @@ public class BookService {
     }
 
     public BookDetailedDTO create(BookDetailedDTO bookDto) {
-        if (bookRepository.findByTitle(bookDto.getTitle()).isPresent())
+        if (bookRepository.findByTitleIgnoreCase(bookDto.getTitle()).isPresent())
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                     String.format("Book with title %s already exists.", bookDto.getTitle()));
 
@@ -82,6 +81,11 @@ public class BookService {
         if (bookFromDb.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     String.format("Book with id %d not found.", id));
+
+        Optional<Book> allBooksWithNewTitle = bookRepository.findByIdNotAndTitleIgnoreCase(id, bookDto.getTitle());
+        if (allBooksWithNewTitle.isPresent())
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    String.format("Another book already exists with title %s.", bookDto.getTitle()));
 
         //overwrite fields present in bookDto - relations are not touched
         Book bookSaved = bookRepository.save(bookDetailedDTOConverter.convertToEntity(bookDto, bookFromDb.get()));
