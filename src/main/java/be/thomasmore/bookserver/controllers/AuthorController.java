@@ -62,7 +62,10 @@ public class AuthorController {
 
 
     @Operation(summary = "delete existing author in the database.",
-            description = "no return value -- http-status NO_CONTENT. ")
+            description = "no return value -- http-status NO_CONTENT. </br>" +
+                    "If the author is still associated with books, the author cannot be deleted. </br>" +
+                    "In that case an Internal Server Error is thrown. </br>" +
+                    "Also if the author does not exist, an Internal Server Error is thrown.  </br>")
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
