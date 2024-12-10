@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "a0bc242f-c3b5-4b5b-b877-3667a700039b",
+		"_postman_id": "6065dc12-2871-4f3a-95e4-c8bf53b8ebb2",
 		"name": "Books",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "13494213"
@@ -678,6 +678,31 @@
 						"api",
 						"authors",
 						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete author 2 with existing books",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-XSRF-TOKEN",
+						"value": "{{xsrf-token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/api/authors/2",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"authors",
+						"2"
 					]
 				}
 			},

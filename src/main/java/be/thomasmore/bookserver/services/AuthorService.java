@@ -65,7 +65,9 @@ public class AuthorService {
         if (authorFromDb.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     String.format("Author with id %d not found.", id));
-
+        if (!authorFromDb.get().getBooks().isEmpty())
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    String.format("Author with id %d still contains books.", id));
         authorRepository.deleteById(id);
     }
 }
