@@ -72,7 +72,7 @@ public class BookControllerAssociateBookWithAuthors extends AbstractIntegrationT
                 .andExpect(status().isInternalServerError())
                 .andReturn();
 
-        assertThat(mvcResult.getResponse().getErrorMessage()).isEqualTo("Author with id 55 does not exist.");
+        assertThat(mvcResult.getResponse().getErrorMessage()).isEqualTo("Not all authors were found.");
 
         //book is created in db:
         Book loadedBook = bookRepository.findById(1).orElseThrow();
