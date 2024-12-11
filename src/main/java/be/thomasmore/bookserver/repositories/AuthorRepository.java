@@ -13,4 +13,6 @@ public interface AuthorRepository extends CrudRepository<Author, Integer> {
 
     Optional<Author> findByName(String name);
 
+    List<Author> findAllById(Iterable<Integer> ids);
+
 }
