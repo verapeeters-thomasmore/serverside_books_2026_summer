@@ -50,8 +50,14 @@ public class BookService {
         if (book.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     String.format("Book with id %d does not exist.", id));
+        BookDetailedDTO bookDetailedDTO = bookDetailedDTOConverter.convertToDto(book.get());
 
-        return bookDetailedDTOConverter.convertToDto(book.get());
+        final List<Book> booksSameAuthor = bookRepository.findDistinctByAuthorsInAndIdNot(book.get().getAuthors(), id);
+        List<BookDTO> booksSameAuthorDTO = booksSameAuthor.stream()
+                .map(b -> bookDTOConverter.convertToDto(b))
+                .collect(Collectors.toList());
+        bookDetailedDTO.setBooksSameAuthor(booksSameAuthorDTO);
+        return bookDetailedDTO;
     }
 
     public List<AuthorDTO> authorsForBook(int bookId) {
