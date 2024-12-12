@@ -21,6 +21,9 @@ values ('De opwindvogelkronieken',
 insert into BOOK (TITLE)
 values ('Design Patterns');/*6*/
 
+insert into BOOK (TITLE)
+values ('Pattern Hatching: Design Patterns Applied');/*7*/
+
 insert into author (NAME, DESCRIPTION, COUNTRY)
 values ( 'Margaret Atwood',
          'Margaret Atwood was born in 1939 in Ottawa and grew up in northern Ontario, Quebec, and Toronto. Throughout her writing career, Margaret Atwood has received numerous awards and honourary degrees.',
@@ -77,6 +80,10 @@ values (select id from BOOK where title= 'Design Patterns',
 
 insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID)
 values (select id from BOOK where title= 'Design Patterns',
+           select id from AUTHOR where name = 'John Vlissides');
+
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID)
+values (select id from BOOK where title= 'Pattern Hatching: Design Patterns Applied',
            select id from AUTHOR where name = 'John Vlissides');
 
 insert into GENRE(NAME)
