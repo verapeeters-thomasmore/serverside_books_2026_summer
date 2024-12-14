@@ -10,6 +10,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -38,6 +39,25 @@ public class BookControllerEditTest extends AbstractIntegrationTest {
 
         Book loadedBook = bookRepository.findByTitle(BOOK_TITLE).orElseThrow();
         assertThat(loadedBook.getTitle()).isEqualTo(BOOK_TITLE);
+    }
+
+    @Test
+    @WithMockUser
+    public void editBookIdNotTheSameAsInDTO() throws Exception {
+        final String BOOK_TITLE = "It is simple to edit a book";
+        BookDetailedDTO editBookDto = BookDetailedDTO.builder()
+                .id(2)
+                .title(BOOK_TITLE)
+                .build();
+        mockMvc.perform(getMockRequestPut("/api/books/1", editBookDto))
+                .andExpect(status().isInternalServerError())
+                .andReturn();
+
+        Book loadedBook1 = bookRepository.findById(1).orElseThrow();
+        assertThat(loadedBook1.getTitle()).isEqualTo("Test Automation"); // original title
+
+        Book loadedBook2 = bookRepository.findById(2).orElseThrow();
+        assertThat(loadedBook2.getTitle()).isEqualTo("REST API Automation Testing from Scratch"); // original title
     }
 
 
