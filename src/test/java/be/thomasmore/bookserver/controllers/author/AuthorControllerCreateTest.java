@@ -34,7 +34,7 @@ public class AuthorControllerCreateTest extends AbstractIntegrationTest {
                 .country(AUTHOR_COUNTRY)
                 .build();
 
-        mockMvc.perform(getMockRequestPostAuthors("/api/authors", newAuthorDto))
+        mockMvc.perform(getMockRequestPost("/api/authors", newAuthorDto))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.name").value(AUTHOR_NAME))
@@ -53,7 +53,7 @@ public class AuthorControllerCreateTest extends AbstractIntegrationTest {
                 .name(null)
                 .build();
 
-        assertThatThrownBy(() -> mockMvc.perform(getMockRequestPostAuthors("/api/authors", newAuthorDto)));
+        assertThatThrownBy(() -> mockMvc.perform(getMockRequestPost("/api/authors", newAuthorDto)));
         assertThat(authorRepository.count()).isEqualTo(0);
     }
 
@@ -65,7 +65,7 @@ public class AuthorControllerCreateTest extends AbstractIntegrationTest {
                 .name("")
                 .build();
 
-        assertThatThrownBy(() -> mockMvc.perform(getMockRequestPostAuthors("/api/authors", newAuthorDto)));
+        assertThatThrownBy(() -> mockMvc.perform(getMockRequestPost("/api/authors", newAuthorDto)));
         assertThat(authorRepository.count()).isEqualTo(0);
     }
 
@@ -78,7 +78,7 @@ public class AuthorControllerCreateTest extends AbstractIntegrationTest {
                 .name(AUTHOR_NAME)
                 .build();
 
-        mockMvc.perform(getMockRequestPostAuthors("/api/authors", newAuthorDto))
+        mockMvc.perform(getMockRequestPost("/api/authors", newAuthorDto))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.name").value(AUTHOR_NAME));
