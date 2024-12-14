@@ -61,4 +61,18 @@ public class BookControllerEditTest extends AbstractIntegrationTest {
     }
 
 
+    @Test
+    @WithMockUser
+    public void editBookIdNotFound() throws Exception {
+        final String BOOK_TITLE = "It is simple to edit a book";
+        BookDetailedDTO editBookDto = BookDetailedDTO.builder()
+                .id(55) //does not exist
+                .title(BOOK_TITLE)
+                .build();
+        mockMvc.perform(getMockRequestPut("/api/books/55", editBookDto))
+                .andExpect(status().isNotFound())
+                .andReturn();
+    }
+
+
 }
