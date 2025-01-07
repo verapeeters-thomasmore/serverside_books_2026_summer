@@ -1,14 +1,25 @@
-insert into BOOK (TITLE, DESCRIPTION)
+insert into SERIE(NAME)
+values ('Harry Potter');
+insert into SERIE(NAME)
+values ('Anderland');
+insert into SERIE(NAME)
+values ('MaddAddam');
+
+
+insert into BOOK (TITLE, DESCRIPTION, SERIE_ID, NUMBER_IN_SERIE)
 values ('Oryx and Crake',
-        'MaddAddam is a serie of 3 dystopian science-fiction novels that deals with extreme genetic engineering.'); /*1*/
+        'MaddAddam is a serie of 3 dystopian science-fiction novels that deals with extreme genetic engineering.',
+           select id from SERIE where NAME = 'MaddAddam', 1); /*1*/
 
-insert into BOOK (TITLE, DESCRIPTION)
+insert into BOOK (TITLE, DESCRIPTION, SERIE_ID, NUMBER_IN_SERIE)
 values ('The year of the flood',
-        'MaddAddam is a serie of 3 dystopian science-fiction novels that deals with extreme genetic engineering.');/*2*/
+        'MaddAddam is a serie of 3 dystopian science-fiction novels that deals with extreme genetic engineering.',
+           select id from SERIE where NAME = 'MaddAddam', 2); /*2*/
 
-insert into BOOK (TITLE, DESCRIPTION)
+insert into BOOK (TITLE, DESCRIPTION, SERIE_ID, NUMBER_IN_SERIE)
 values ('MaddAddam',
-        'MaddAddam is a serie of 3 dystopian science-fiction novels that deals with extreme genetic engineering.');/*3*/
+        'MaddAddam is a serie of 3 dystopian science-fiction novels that deals with extreme genetic engineering.',
+           select id from SERIE where NAME = 'MaddAddam', 3); /*3*/
 
 insert into BOOK (TITLE, DESCRIPTION)
 values ('1Q84',
@@ -25,26 +36,26 @@ insert into BOOK (TITLE)
 values ('Pattern Hatching: Design Patterns Applied');/*7*/
 
 insert into author (NAME, DESCRIPTION, COUNTRY)
-values ( 'Margaret Atwood',
-         'Margaret Atwood was born in 1939 in Ottawa and grew up in northern Ontario, Quebec, and Toronto. Throughout her writing career, Margaret Atwood has received numerous awards and honourary degrees.',
-         'Canada'); /*1*/
+values ('Margaret Atwood',
+        'Margaret Atwood was born in 1939 in Ottawa and grew up in northern Ontario, Quebec, and Toronto. Throughout her writing career, Margaret Atwood has received numerous awards and honourary degrees.',
+        'Canada'); /*1*/
 
 insert into author (NAME, DESCRIPTION, COUNTRY)
-values ( 'Haruki Murakami',
-         'Haruki Murakami  is a popular contemporary Japanese writer and translator. His work has been described as ''easily accessible, yet profoundly complex''.',
-         'Japan'); /*2*/
+values ('Haruki Murakami',
+        'Haruki Murakami  is a popular contemporary Japanese writer and translator. His work has been described as ''easily accessible, yet profoundly complex''.',
+        'Japan'); /*2*/
 
 insert into author (NAME, DESCRIPTION, COUNTRY)
-values ( 'Erich Gamma', 'One of the ''Gang of four''.', 'Switzerland'); /*3*/
+values ('Erich Gamma', 'One of the ''Gang of four''.', 'Switzerland'); /*3*/
 
 insert into author (NAME, DESCRIPTION, COUNTRY)
-values ( 'Richard Helm', 'One of the ''Gang of four''.', 'Australia'); /*4*/
+values ('Richard Helm', 'One of the ''Gang of four''.', 'Australia'); /*4*/
 
 insert into author (NAME, DESCRIPTION, COUNTRY)
-values ( 'Ralph Johnson', 'One of the ''Gang of four''.', 'USA'); /*5*/
+values ('Ralph Johnson', 'One of the ''Gang of four''.', 'USA'); /*5*/
 
 insert into author (NAME, DESCRIPTION, COUNTRY)
-values ( 'John Vlissides', 'One of the ''Gang of four''.', 'USA'); /*6*/
+values ('John Vlissides', 'One of the ''Gang of four''.', 'USA'); /*6*/
 
 insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID)
 values (select id from BOOK where title= 'Oryx and Crake',
@@ -104,7 +115,5 @@ VALUES ('marie', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm',
 INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE)
 VALUES ('vera', '$2y$12$KF3spKP4kgf59.6zYkmjyeYaW2.4ZxV16Grpw1FPsFnzYq68kswJ6', 'USER'); -- vera
 
-insert into SERIE(NAME) values ('Harry Potter');
-insert into SERIE(NAME) values ('Anderland');
 
 
