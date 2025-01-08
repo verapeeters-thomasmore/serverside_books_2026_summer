@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.List;
 
@@ -61,4 +62,21 @@ public class BookControllerAssociateBookWithAuthors extends AbstractIntegrationT
         Book loadedBook = bookRepository.findById(1).orElseThrow();
         assertThat(loadedBook.getAuthors().size()).isEqualTo(0);
     }
+    @Test
+    @WithMockUser
+    @Transactional
+    public void associateBookWithAuthorThatDoesNotExist() throws Exception {
+        List<Integer> authorIdList = List.of(55);
+
+        final MvcResult mvcResult = mockMvc.perform(getMockRequestPut("/api/books/1/authors", authorIdList))
+                .andExpect(status().isInternalServerError())
+                .andReturn();
+
+        assertThat(mvcResult.getResponse().getErrorMessage()).isEqualTo("Author with id 55 does not exist.");
+
+        //book is created in db:
+        Book loadedBook = bookRepository.findById(1).orElseThrow();
+        assertThat(loadedBook.getAuthors().size()).isEqualTo(0);
+    }
+
 }
