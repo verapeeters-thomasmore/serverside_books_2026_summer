@@ -45,4 +45,20 @@ public class BookControllerAssociateBookWithAuthors extends AbstractIntegrationT
         assertThat(loadedBook.getAuthors().size()).isEqualTo(2);
     }
 
+    @Test
+    @WithMockUser
+    @Transactional
+    public void associateBookWithEmptyAuthorList() throws Exception {
+        List<Integer> authorIdList = List.of();
+
+        mockMvc.perform(getMockRequestPut("/api/books/1/authors", authorIdList))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.authors").exists())
+                .andExpect(jsonPath("$.authors", hasSize(0)));
+
+        //book is created in db:
+        Book loadedBook = bookRepository.findById(1).orElseThrow();
+        assertThat(loadedBook.getAuthors().size()).isEqualTo(0);
+    }
 }
