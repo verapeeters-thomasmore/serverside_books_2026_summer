@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,19 +50,11 @@ public class BookService {
     }
 
     public BookDetailedDTO findOne(int id) {
-        final Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                        "Book with id %d does not exist.".formatted(id)));
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format("Book with id %d does not exist.", id)));
 
-        // Modern approach: gather all data first, then create immutable DTO
-        final List<BookDTO> booksSameAuthorDTO = bookRepository
-                .findDistinctByAuthorsInAndIdNot(book.getAuthors(), id)
-                .stream()
-                .map(bookDTOConverter::convertToDto)
-                .toList();
-
-        // Pass booksSameAuthor at construction time (records are immutable)
-        return bookDetailedDTOConverter.convertToDto(book, booksSameAuthorDTO);
+        return bookDetailedDTOConverter.convertToDto(book);
     }
 
     public List<AuthorDTO> authorsForBook(int bookId) {

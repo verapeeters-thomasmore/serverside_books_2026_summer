@@ -140,3 +140,53 @@ Users can also register new accounts via the signup endpoint.
 - Tests use `@ActiveProfiles("test")` for test database configuration
 - MockMvc for controller testing with automatic CSRF token handling
 - Test classes organized by controller and operation
+
+
+## Common Development Tasks
+
+### Adding a New Entity
+
+1. Create model class with JPA annotations
+2. Create repository interface
+3. Create DTOs (detailed and simplified)
+4. Create DTO converter
+5. Create service interface and implementation
+6. Create controller with REST endpoints
+7. Add test classes
+8. Update `data.sql` if needed
+
+### Running with Different Profiles
+
+```bash
+# Development (H2, default)
+./mvnw spring-boot:run
+
+# Test profile
+./mvnw spring-boot:run -Dspring-boot.run.profiles=test
+
+# Production (PostgreSQL)
+./mvnw spring-boot:run -Dspring-boot.run.profiles=prod
+```
+
+## Troubleshooting
+
+### Frontend not loading at localhost:8080
+- Ensure you've run `./mvnw compile` or `./mvnw package` at least once
+- Check that frontend build files are in `target/classes/public`
+
+### CSRF errors in Postman
+- Ensure you've created a Postman environment
+- The collection automatically handles tokens
+- For manual requests: copy XSRF-TOKEN cookie to X-XSRF-TOKEN header
+
+### Database issues
+- Check H2 console at http://localhost:8080/h2-console
+- Verify JDBC URL: `jdbc:h2:mem:books`
+- Ensure `data.sql` is being loaded (dev profile only)
+
+## Additional Resources
+
+- [Spring Boot Documentation](https://spring.io/projects/spring-boot)
+- [React Documentation](https://react.dev)
+- [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
+- [Spring Security](https://spring.io/projects/spring-security)
