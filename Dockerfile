@@ -5,7 +5,7 @@ WORKDIR /app
 RUN mvn clean install -DskipTests
 
 
-FROM openjdk:21
+FROM amazoncorretto:21-alpine-jdk
 COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
 CMD ["java", "-jar", "app.jar"]
