@@ -31,8 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
-#*.mv.db
-### de deploy versie deployt MET h2-file db!!!!!
+*.mv.db
 
 
 ### FRONTEND ###
