@@ -17,8 +17,13 @@ public class BookDetailedDTO {
 
     private String description;
 
+    private SerieDTO serie;
+    private Integer numberInSerie;
+
     //more data will be inserted here later...
 
     private Collection<AuthorDTO> authors;
+
+    private Collection<BookDTO> booksSameAuthor;
 }
 

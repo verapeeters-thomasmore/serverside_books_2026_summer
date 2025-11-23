@@ -30,5 +30,10 @@ public class Book {
 
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Author> authors;
+
+    @ManyToOne
+    private Serie serie;
+
+    private Integer numberInSerie;
 }
 

@@ -8,6 +8,7 @@ import be.thomasmore.bookserver.model.converters.BookDetailedDTOConverter;
 import be.thomasmore.bookserver.model.dto.AuthorDTO;
 import be.thomasmore.bookserver.model.dto.BookDTO;
 import be.thomasmore.bookserver.model.dto.BookDetailedDTO;
+import be.thomasmore.bookserver.repositories.AuthorRepository;
 import be.thomasmore.bookserver.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,9 @@ import java.util.stream.Collectors;
 public class BookService {
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private AuthorRepository authorRepository;
 
     @Autowired
     private BookDTOConverter bookDTOConverter;
@@ -46,8 +50,14 @@ public class BookService {
         if (book.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     String.format("Book with id %d does not exist.", id));
+        BookDetailedDTO bookDetailedDTO = bookDetailedDTOConverter.convertToDto(book.get());
 
-        return bookDetailedDTOConverter.convertToDto(book.get());
+        final List<Book> booksSameAuthor = bookRepository.findDistinctByAuthorsInAndIdNot(book.get().getAuthors(), id);
+        List<BookDTO> booksSameAuthorDTO = booksSameAuthor.stream()
+                .map(b -> bookDTOConverter.convertToDto(b))
+                .collect(Collectors.toList());
+        bookDetailedDTO.setBooksSameAuthor(booksSameAuthorDTO);
+        return bookDetailedDTO;
     }
 
     public List<AuthorDTO> authorsForBook(int bookId) {
@@ -97,6 +107,11 @@ public class BookService {
         if (bookFromDb.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     String.format("Book with id %d not found.", id));
+
+        List<Author> allById = authorRepository.findAllById(authorIds);
+        if (allById.size() != authorIds.size())
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    String.format("Not all authors were found."));
 
         Book book = bookFromDb.get();
         List<Author> authorIdObjects = (authorIds != null)
