@@ -15,6 +15,8 @@ public class BookDetailedDTO {
     private int id;
     private String title;
 
+    private String description;
+
     //more data will be inserted here later...
 
     private Collection<AuthorDTO> authors;

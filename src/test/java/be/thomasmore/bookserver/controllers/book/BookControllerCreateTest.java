@@ -28,14 +28,17 @@ public class BookControllerCreateTest extends AbstractIntegrationTest {
     @WithMockUser
     public void createBook() throws Exception {
         final String BOOK_TITLE = "It is simple to create a book";
+        final String BOOK_DESCRIPTION = "simple description";
         BookDetailedDTO newBookDto = BookDetailedDTO.builder()
                 .title(BOOK_TITLE)
+                .description(BOOK_DESCRIPTION)
                 .build();
 
         mockMvc.perform(getMockRequestPost("/api/books/", newBookDto))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.title").value(BOOK_TITLE))
+                .andExpect(jsonPath("$.description").value(BOOK_DESCRIPTION))
                 .andExpect(jsonPath("$.authors").isEmpty());
 
         Book loadedBook = bookRepository.findByTitle(BOOK_TITLE).orElseThrow();
@@ -105,4 +108,23 @@ public class BookControllerCreateTest extends AbstractIntegrationTest {
         assertThat(loadedBook.getTitle()).isEqualTo(BOOK_TITLE);
     }
 
+    @Test
+    @ExceptionHandler
+    @WithMockUser
+    public void createBook_titleHasToBeUniqueCaseInsensitive() throws Exception {
+        BookDetailedDTO newBookDto = BookDetailedDTO.builder()
+                .title("RECREATE AN EXISTING BOOK")
+                .build();
+        MockHttpServletRequestBuilder mockRequest = getMockRequestPost("/api/books/", newBookDto);
+
+        //first time is ok
+        mockMvc.perform(mockRequest).andExpect(status().isOk());
+
+        //send the same POST again with same title - fails
+        final MvcResult mvcResult = mockMvc.perform(mockRequest)
+                .andExpect(status().isInternalServerError())
+                .andReturn();
+        assertThat(mvcResult.getResponse().getErrorMessage()).isEqualTo("Book with title RECREATE AN EXISTING BOOK already exists.");
+        assertThat(bookRepository.count()).isEqualTo(1);
+    }
 }

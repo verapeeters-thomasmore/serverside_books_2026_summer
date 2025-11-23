@@ -45,8 +45,12 @@ public class BookController {
     }
 
     @Operation(summary = "create a new book in the database.",
-            description = "The authors are <b>not</b> updated in the new book.</br>" +
+            description = "The title can not be empty or blank and has to be unique. </br>" +
+                    "</br>" +
+                    "The authors are <b>not</b> updated in the new book.</br>" +
                     "Use PUT api/books/{id}/authors to update those. </br>" +
+                    "</br>" +
+                    "The title of the book has to be unique. This is a case-insensitive check </br>" +
                     "</br>" +
                     "Returns new book (containing id from database). ")
     @PostMapping("")
@@ -58,6 +62,8 @@ public class BookController {
     @Operation(summary = "edit existing book in the database.",
             description = "The authors are <b>not</b> updated in the new book.</br>" +
                     "Use PUT api/books/{id}/authors to update those. </br>" +
+                    "</br>" +
+                    "The title of the book has to be unique. This is a case-insensitive check </br>" +
                     "</br>" +
                     "Returns updated book. ")
     @PutMapping("{id}")

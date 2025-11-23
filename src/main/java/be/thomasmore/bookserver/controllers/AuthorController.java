@@ -2,14 +2,14 @@ package be.thomasmore.bookserver.controllers;
 
 import be.thomasmore.bookserver.model.dto.AuthorDTO;
 import be.thomasmore.bookserver.model.dto.AuthorDetailedDTO;
+import be.thomasmore.bookserver.model.dto.BookDetailedDTO;
 import be.thomasmore.bookserver.services.AuthorService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/authors")
@@ -35,6 +35,38 @@ public class AuthorController {
     public AuthorDetailedDTO findOne(@PathVariable int id) {
         log.info(String.format("##### findOne author %d", id));
         return authorService.findOne(id);
+    }
+
+    @Operation(summary = "create a new author in the database.",
+            description = "Returns new author (containing id from database). </br>" +
+                    "The name of the new author must be unique (case insensitive). </br>" +
+                    "The name of the author should never be empty or blank. </br>")
+    @PostMapping("")
+    public AuthorDetailedDTO create(@Valid @RequestBody AuthorDetailedDTO authorDTO) {
+        log.info("##### create author");
+        return authorService.create(authorDTO);
+    }
+
+    @Operation(summary = "edit existing author in the database.",
+            description = "The books are <b>not</b> updated in the new author.</br>" +
+                    "Use PUT api/books/{id}/authors to update those. </br>" +
+                    "</br>" +
+                    "Returns updated author. ")
+    @PutMapping("{id}")
+    public AuthorDetailedDTO edit(@PathVariable int id, @RequestBody AuthorDetailedDTO authorDto) {
+        log.info(String.format("##### edit author %d", id));
+        return authorService.edit(id, authorDto);
+    }
+
+    @Operation(summary = "delete existing author from the database.",
+            description = "If the author is still associated with books, the author cannot be deleted. </br>" +
+                    "In that case an Internal Server Error is thrown. </br>" +
+                    "Also if the author does not exist, an Internal Server Error is thrown.  </br>" )
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable int id) {
+        log.info(String.format("##### delete book %d", id));
+        authorService.delete(id);
     }
 
 }

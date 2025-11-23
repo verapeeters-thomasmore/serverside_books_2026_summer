@@ -1,7 +1,6 @@
 package be.thomasmore.bookserver;
 
 
-import be.thomasmore.bookserver.model.dto.BookDetailedDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +34,26 @@ public abstract class AbstractIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON);
     }
 
-    protected MockHttpServletRequestBuilder getMockRequestPost(String url, BookDetailedDTO NEW_BOOK_DTO) throws JsonProcessingException {
+    protected <T> MockHttpServletRequestBuilder getMockRequestPost(String url, T dto) throws JsonProcessingException {
         return MockMvcRequestBuilders.post(url)
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .content(this.mapper.writeValueAsString(NEW_BOOK_DTO));
+                .content(this.mapper.writeValueAsString(dto));
     }
+    protected <T> MockHttpServletRequestBuilder getMockRequestPut(String url, T dto) throws JsonProcessingException {
+        return MockMvcRequestBuilders.put(url)
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(this.mapper.writeValueAsString(dto));
+    }
+
+    protected MockHttpServletRequestBuilder getMockRequestDelete(String url, Integer id)  {
+        return MockMvcRequestBuilders.delete(url, id)
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON);
+    }
+
 }
 
