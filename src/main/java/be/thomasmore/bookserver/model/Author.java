@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import jakarta.persistence.*;
+
 import java.util.Set;
 
 @NoArgsConstructor
@@ -24,13 +25,15 @@ public class Author {
     @NotNull
     private String name;
 
+    @Column(length = 1024)
+    private String description;
+
+    private String country;
+
     @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
     private Set<Book> books;
 
     public Author(int id) {
         this.id = id;
     }
-
-
-
 }
