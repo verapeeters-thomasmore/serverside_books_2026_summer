@@ -45,7 +45,7 @@ public class BookService {
     public BookDetailedDTO findOne(int id) {
         final Optional<Book> book = bookRepository.findById(id);
         if (book.isEmpty())
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     String.format("Book with id %d does not exist.", id));
 
         return bookDetailedDTOConverter.convertToDto(book.get());

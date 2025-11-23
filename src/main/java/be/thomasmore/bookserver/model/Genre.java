@@ -1,12 +1,14 @@
 package be.thomasmore.bookserver.model;
 
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
@@ -14,7 +16,9 @@ import jakarta.validation.constraints.NotNull;
 public class Genre {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    int id;
-    @NotBlank(message="Genre name should not be blank") @NotNull
-    String name;
+    private int id;
+
+    @NotBlank(message = "Genre name should not be blank")
+    @NotNull
+    private String name;
 }
