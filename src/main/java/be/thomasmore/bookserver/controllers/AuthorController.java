@@ -17,7 +17,10 @@ public class AuthorController {
     @Autowired
     private AuthorService authorService;
 
-    @Operation(summary = "find all the authors that are stored in the database ")
+    @Operation(summary = "find all the authors that are stored in the database ",
+            description = "All authors are returned. </br>" +
+                    "</br>" +
+                    "The authors Collection contains only id and name. </br>")
     @GetMapping("")
     public Iterable<AuthorDTO> findAll() {
         log.info("##### findAll authors");
