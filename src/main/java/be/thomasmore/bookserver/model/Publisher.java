@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class Publisher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     private String name;
     private String city;
     private Double baseDiscountPercentage; // Bijvoorbeeld: 3.0 voor 3%
