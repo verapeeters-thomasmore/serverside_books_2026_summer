@@ -9,7 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Sql("/sql/publishers/create_all_publishers.sql")
 @Sql(scripts = "/sql/publishers/clean_publishers.sql", executionPhase = AFTER_TEST_METHOD)
-public class PublisherControllerGetOneAuthorTest extends AbstractIntegrationTest {
+public class PublisherControllerGetOnePublisherTest extends AbstractIntegrationTest {
 
     @Test
     public void getOnePublisher() throws Exception {
@@ -20,7 +20,6 @@ public class PublisherControllerGetOneAuthorTest extends AbstractIntegrationTest
                 .andExpect(jsonPath("$.city").value("Antwerpen"))
                 .andExpect(jsonPath("$.baseDiscountPercentage").value(3))
                 .andExpect(jsonPath("$.bulkPurchaseQuantity").value(500))
-                .andExpect(jsonPath("$.bulkDiscountPercentage").value(12))
-        ;
+                .andExpect(jsonPath("$.bulkDiscountPercentage").value(12));
     }
 }
