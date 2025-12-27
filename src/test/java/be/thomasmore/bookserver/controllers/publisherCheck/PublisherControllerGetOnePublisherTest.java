@@ -1,4 +1,4 @@
-package be.thomasmore.bookserver.controllers.publisher;
+package be.thomasmore.bookserver.controllers.publisherCheck;
 
 import be.thomasmore.bookserver.AbstractIntegrationTest;
 import org.junit.jupiter.api.Test;
