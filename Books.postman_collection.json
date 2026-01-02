@@ -649,6 +649,31 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "delete serie 2",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-XSRF-TOKEN",
+						"value": "{{xsrf-token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/api/series/2",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"series",
+						"2"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"auth": {
