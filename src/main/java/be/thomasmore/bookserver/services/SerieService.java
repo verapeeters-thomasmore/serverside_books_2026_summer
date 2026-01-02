@@ -62,4 +62,13 @@ public class SerieService {
         Serie serieSaved = serieRepository.save(serieDetailedDTOConverter.convertToEntity(serieDto, serieFromDb.get()));
         return serieDetailedDTOConverter.convertToDto(serieSaved);
     }
+
+    public void delete(int id) {
+        Optional<Serie> serieFromDb = serieRepository.findById(id);
+        if (serieFromDb.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    String.format("Serie with id %d not found.", id));
+
+        serieRepository.deleteById(id);
+    }
 }

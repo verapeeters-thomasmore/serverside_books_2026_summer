@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -51,5 +52,12 @@ public class SerieController {
     public SerieDetailedDTO edit(@PathVariable int id, @RequestBody SerieDetailedDTO serieDto) {
         log.info(String.format("##### edit serie %d", id));
         return serieService.edit(id, serieDto);
+    }
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable int id) {
+        log.info(String.format("##### delete serie %d", id));
+        serieService.delete(id);
     }
 }
