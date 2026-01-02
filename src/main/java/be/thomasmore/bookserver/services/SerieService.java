@@ -1,8 +1,10 @@
 package be.thomasmore.bookserver.services;
 
+import be.thomasmore.bookserver.model.Author;
 import be.thomasmore.bookserver.model.Serie;
 import be.thomasmore.bookserver.model.converters.SerieDTOConverter;
 import be.thomasmore.bookserver.model.converters.SerieDetailedDTOConverter;
+import be.thomasmore.bookserver.model.dto.AuthorDetailedDTO;
 import be.thomasmore.bookserver.model.dto.SerieDTO;
 import be.thomasmore.bookserver.model.dto.SerieDetailedDTO;
 import be.thomasmore.bookserver.repositories.SerieRepository;
@@ -46,4 +48,18 @@ public class SerieService {
         return serieDetailedDTOConverter.convertToDto(serieSaved);
     }
 
+    public SerieDetailedDTO edit(int id, SerieDetailedDTO serieDto) {
+        if (serieDto.getId() != id)
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    String.format("id in serie (%d) does not match id in url (%d).", serieDto.getId(), id));
+
+        Optional<Serie> serieFromDb = serieRepository.findById(id);
+        if (serieFromDb.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    String.format("Serie with id %d not found.", id));
+
+        //overwrite fields present in serieDto - relations are not touched
+        Serie serieSaved = serieRepository.save(serieDetailedDTOConverter.convertToEntity(serieDto, serieFromDb.get()));
+        return serieDetailedDTOConverter.convertToDto(serieSaved);
+    }
 }

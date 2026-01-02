@@ -3,6 +3,7 @@ package be.thomasmore.bookserver.model.converters;
 import be.thomasmore.bookserver.model.Author;
 import be.thomasmore.bookserver.model.Book;
 import be.thomasmore.bookserver.model.Serie;
+import be.thomasmore.bookserver.model.dto.AuthorDetailedDTO;
 import be.thomasmore.bookserver.model.dto.BookDetailedDTO;
 import be.thomasmore.bookserver.model.dto.SerieDetailedDTO;
 import org.modelmapper.ModelMapper;
@@ -34,4 +35,13 @@ public class SerieDetailedDTOConverter {
         return modelMapper.map(serieDto, Serie.class);
     }
 
+    /**
+     * @param serieDto the data from client that has to be converted
+     * @param serie:   the original serie entity (from db) - this object will be overwritten with the data from serieDto
+     * @return the modified serie entity object - ready to save in the database
+     */
+    public Serie convertToEntity(SerieDetailedDTO serieDto, Serie serie) {
+        modelMapper.map(serieDto, serie);
+        return serie;
+    }
 }
