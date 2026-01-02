@@ -39,4 +39,11 @@ public class SerieService {
                     String.format("Serie with id %d does not exist.", id));
         return serieDetailedDTOConverter.convertToDto(serie.get());
     }
+
+    public SerieDetailedDTO create(SerieDetailedDTO serieDto) {
+        final Serie entityToSave = serieDetailedDTOConverter.convertToEntity(serieDto);
+        final Serie serieSaved = serieRepository.save(entityToSave);
+        return serieDetailedDTOConverter.convertToDto(serieSaved);
+    }
+
 }

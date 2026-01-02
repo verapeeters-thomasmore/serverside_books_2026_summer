@@ -1,10 +1,16 @@
 package be.thomasmore.bookserver.model.converters;
 
+import be.thomasmore.bookserver.model.Author;
+import be.thomasmore.bookserver.model.Book;
 import be.thomasmore.bookserver.model.Serie;
+import be.thomasmore.bookserver.model.dto.BookDetailedDTO;
 import be.thomasmore.bookserver.model.dto.SerieDetailedDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @Component
 public class SerieDetailedDTOConverter {
@@ -18,6 +24,14 @@ public class SerieDetailedDTOConverter {
      */
     public SerieDetailedDTO convertToDto(Serie serie) {
         return modelMapper.map(serie, SerieDetailedDTO.class);
+    }
+
+    /**
+     * @param serieDto
+     * @return the serie entity object - ready to save in the database
+     */
+    public Serie convertToEntity(SerieDetailedDTO serieDto) {
+        return modelMapper.map(serieDto, Serie.class);
     }
 
 }
