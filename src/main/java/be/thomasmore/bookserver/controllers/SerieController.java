@@ -1,6 +1,5 @@
 package be.thomasmore.bookserver.controllers;
 
-import be.thomasmore.bookserver.model.dto.BookDetailedDTO;
 import be.thomasmore.bookserver.model.dto.SerieDTO;
 import be.thomasmore.bookserver.model.dto.SerieDetailedDTO;
 import be.thomasmore.bookserver.services.SerieService;
@@ -41,5 +40,16 @@ public class SerieController {
     public SerieDetailedDTO create(@Valid @RequestBody SerieDetailedDTO serieDTO) {
         log.info("##### create serie");
         return serieService.create(serieDTO);
+    }
+
+    @Operation(summary = "edit existing serie in the database.",
+            description = "The books are <b>not</b> updated in the new serie.</br>" +
+                    "Use PUT api/books/{id}/series to update those. </br>" +
+                    "</br>" +
+                    "Returns updated serie. ")
+    @PutMapping("{id}")
+    public SerieDetailedDTO edit(@PathVariable int id, @RequestBody SerieDetailedDTO serieDto) {
+        log.info(String.format("##### edit serie %d", id));
+        return serieService.edit(id, serieDto);
     }
 }
