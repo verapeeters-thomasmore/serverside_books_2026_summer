@@ -1,13 +1,17 @@
 package be.thomasmore.bookserver.services;
 
 import be.thomasmore.bookserver.model.Author;
+import be.thomasmore.bookserver.model.Award;
+import be.thomasmore.bookserver.model.AwardBooks;
 import be.thomasmore.bookserver.model.Book;
 import be.thomasmore.bookserver.model.converters.AuthorDTOConverter;
 import be.thomasmore.bookserver.model.converters.BookDTOConverter;
 import be.thomasmore.bookserver.model.converters.BookDetailedDTOConverter;
 import be.thomasmore.bookserver.model.dto.AuthorDTO;
+import be.thomasmore.bookserver.model.dto.AwardDTO;
 import be.thomasmore.bookserver.model.dto.BookDTO;
 import be.thomasmore.bookserver.model.dto.BookDetailedDTO;
+import be.thomasmore.bookserver.repositories.AwardRepository;
 import be.thomasmore.bookserver.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,6 +28,8 @@ import java.util.stream.Collectors;
 public class BookService {
     @Autowired
     private BookRepository bookRepository;
+    @Autowired
+    private AwardRepository awardRepository;
 
     @Autowired
     private BookDTOConverter bookDTOConverter;
@@ -47,7 +54,15 @@ public class BookService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     String.format("Book with id %d does not exist.", id));
 
-        return bookDetailedDTOConverter.convertToDto(book.get());
+        if (book.get().getAwardBooks().isEmpty()) {
+            return bookDetailedDTOConverter.convertToDto(book.get());
+        } else {
+            double totalPrizeMoney = 0;
+            for (AwardBooks awardBooks : book.get().getAwardBooks()) {
+                totalPrizeMoney += awardBooks.getAward().getPrizeMoney();
+            }
+            return bookDetailedDTOConverter.convertToDtoWithPrizeMoney(book.get(), totalPrizeMoney);
+        }
     }
 
     public List<AuthorDTO> authorsForBook(int bookId) {

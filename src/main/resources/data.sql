@@ -22,26 +22,26 @@ insert into BOOK (TITLE)
 values ('Design Patterns');/*6*/
 
 insert into author (NAME, DESCRIPTION, COUNTRY)
-values ( 'Margaret Atwood',
-         'Margaret Atwood was born in 1939 in Ottawa and grew up in northern Ontario, Quebec, and Toronto. Throughout her writing career, Margaret Atwood has received numerous awards and honourary degrees.',
-         'Canada'); /*1*/
+values ('Margaret Atwood',
+        'Margaret Atwood was born in 1939 in Ottawa and grew up in northern Ontario, Quebec, and Toronto. Throughout her writing career, Margaret Atwood has received numerous awards and honourary degrees.',
+        'Canada'); /*1*/
 
 insert into author (NAME, DESCRIPTION, COUNTRY)
-values ( 'Haruki Murakami',
-         'Haruki Murakami  is a popular contemporary Japanese writer and translator. His work has been described as ''easily accessible, yet profoundly complex''.',
-         'Japan'); /*2*/
+values ('Haruki Murakami',
+        'Haruki Murakami  is a popular contemporary Japanese writer and translator. His work has been described as ''easily accessible, yet profoundly complex''.',
+        'Japan'); /*2*/
 
 insert into author (NAME, DESCRIPTION, COUNTRY)
-values ( 'Erich Gamma', 'One of the ''Gang of four''.', 'Switzerland'); /*3*/
+values ('Erich Gamma', 'One of the ''Gang of four''.', 'Switzerland'); /*3*/
 
 insert into author (NAME, DESCRIPTION, COUNTRY)
-values ( 'Richard Helm', 'One of the ''Gang of four''.', 'Australia'); /*4*/
+values ('Richard Helm', 'One of the ''Gang of four''.', 'Australia'); /*4*/
 
 insert into author (NAME, DESCRIPTION, COUNTRY)
-values ( 'Ralph Johnson', 'One of the ''Gang of four''.', 'USA'); /*5*/
+values ('Ralph Johnson', 'One of the ''Gang of four''.', 'USA'); /*5*/
 
 insert into author (NAME, DESCRIPTION, COUNTRY)
-values ( 'John Vlissides', 'One of the ''Gang of four''.', 'USA'); /*6*/
+values ('John Vlissides', 'One of the ''Gang of four''.', 'USA'); /*6*/
 
 insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID)
 values (select id from BOOK where title= 'Oryx and Crake',
@@ -97,7 +97,43 @@ VALUES ('marie', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm',
 INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE)
 VALUES ('vera', '$2y$12$KF3spKP4kgf59.6zYkmjyeYaW2.4ZxV16Grpw1FPsFnzYq68kswJ6', 'USER'); -- vera
 
-insert into SERIE(NAME) values ('Harry Potter');
-insert into SERIE(NAME) values ('Anderland');
+insert into SERIE(NAME)
+values ('Harry Potter');
+insert into SERIE(NAME)
+values ('Anderland');
 
 
+INSERT INTO AWARD(AWARD_NAME, COUNTRY, PRIZE_MONEY, GENRE_FOCUS, ORGANIZATION)
+values ('Nobelprijs voor Literatuur', 'Zweden', 1000000.0, 'Algemeen', 'Zweedse Academie'),
+       ('Goncourtprijs', 'Frankrijk', 10.0, 'Fictie', 'Académie Goncourt'),
+       ('Pulitzer Prize for Fiction', 'USA', 15000.0, 'Fictie', 'Columbia University'),
+       ('Man Booker Prize', 'Verenigd Koninkrijk', 50000.0, 'Roman', 'Booker Prize Foundation'),
+       ('Hugo Award', 'USA', 0.0, 'Sciencefiction', 'World Science Fiction Society'),
+       ('Prix Femina', 'Frankrijk', 0.0, 'Fictie', 'Jury van vrouwelijke critici'),
+       ('PEN/Faulkner Award', 'USA', 15000.0, 'Fictie', 'PEN/Faulkner Foundation'),
+       ('De Inktaap', 'Nederland/België', 0.0, 'Jeugdliteratuur', 'Stichting Lezen'),
+       ('AKO Literatuurprijs', 'Nederland', 50000.0, 'Fictie', 'Stichting Jaarlijkse Literatuurprijs'),
+       ('Literatuurprijs der Nederlandse Letteren', 'Nederland/België', 40000.0, 'Algemeen', 'Taalunie');
+
+INSERT INTO AWARD_BOOKS (AWARD_ID, BOOK_ID, AWARD_YEAR)
+values (select id from award where award_name = 'Nobelprijs voor Literatuur',
+           select id from book where title = 'Oryx and Crake',
+               2004),
+       (select id from award where award_name = 'Nobelprijs voor Literatuur',
+           select id from book where title = 'MaddAddam',
+               2013),
+       (select id from award where award_name = 'Goncourtprijs',
+           select id from book where title = 'The year of the flood',
+               2009),
+       (select id from award where award_name = 'Pulitzer Prize for Fiction',
+           select id from book where title = 'MaddAddam',
+               2014),
+       (select id from award where award_name = 'Pulitzer Prize for Fiction',
+           select id from book where title = '1Q84',
+               2015),
+       (select id from award where award_name = 'Hugo Award',
+           select id from book where title = 'De opwindvogelkronieken',
+               2011),
+       (select id from award where award_name = 'AKO Literatuurprijs',
+           select id from book where title = 'Design Patterns',
+               1995);

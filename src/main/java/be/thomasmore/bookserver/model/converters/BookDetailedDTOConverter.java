@@ -26,6 +26,12 @@ public class BookDetailedDTOConverter {
         return modelMapper.map(book, BookDetailedDTO.class);
     }
 
+    public BookDetailedDTO convertToDtoWithPrizeMoney(Book book, double totalPrizeMoney) {
+        BookDetailedDTO bookDetailedDTO = convertToDto(book);
+        bookDetailedDTO.setTotalPrizeMoney(totalPrizeMoney);
+        return modelMapper.map(bookDetailedDTO, BookDetailedDTO.class);
+    }
+
     /**
      * @param bookDto: the data from client that has to be converted
      * @param book:   the original book entity (from db) - this object will be overwritten with the data from bookDto

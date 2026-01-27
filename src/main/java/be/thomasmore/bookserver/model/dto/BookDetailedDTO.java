@@ -18,6 +18,7 @@ public class BookDetailedDTO {
     private String description;
 
     //more data will be inserted here later...
+    private Double totalPrizeMoney;
 
     private Collection<AuthorDTO> authors;
 }

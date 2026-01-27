@@ -1,12 +1,11 @@
 package be.thomasmore.bookserver.model;
 
-import lombok.*;
-
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.*;
+
+import java.util.Collection;
 import java.util.List;
 
 @NoArgsConstructor
@@ -25,10 +24,13 @@ public class Book {
     @NotNull
     private String title;
 
-    @Column(length=1024)
+    @Column(length = 1024)
     private String description;
 
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Author> authors;
+
+    @OneToMany(mappedBy = "book")
+    private Collection<AwardBooks> awardBooks;
 }
 
