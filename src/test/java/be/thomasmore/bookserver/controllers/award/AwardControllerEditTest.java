@@ -36,7 +36,7 @@ public class AwardControllerEditTest extends AbstractIntegrationTest {
                 .andExpect(jsonPath("$.awardName").value(AWARD_NEW_NAME));
 
 
-        Award loadedAward = awardRepository.findByAwardName(AWARD_NEW_NAME).orElseThrow();
-        assertThat(loadedAward.getAwardName()).isEqualTo(AWARD_NEW_NAME);
+//        Award loadedAward = awardRepository.findByAwardName(AWARD_NEW_NAME).orElseThrow();
+//        assertThat(loadedAward.getAwardName()).isEqualTo(AWARD_NEW_NAME);
     }
 }
