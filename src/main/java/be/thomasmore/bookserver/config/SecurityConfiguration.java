@@ -30,6 +30,7 @@ import java.io.IOException;
 
 /**
  * Spring Security configuration with CSRF protection for SPA frontend.
+ *
  * CSRF is enabled for all /api/** endpoints to protect against cross-site request forgery.
  * The frontend must:
  * 1. Read the XSRF-TOKEN cookie (set by CookieCsrfTokenRepository)
