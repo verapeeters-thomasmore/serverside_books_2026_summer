@@ -26,8 +26,7 @@ public interface BookRepository extends CrudRepository<Book, Integer> {
 
     //this works with the flat authors Collection (in current version of spring)
     // so I will not add the extra complexity of defining a Collection<Collection<Authors>>
-    @SuppressWarnings("SpringDataRepositoryMethodParametersInspection")
-    List<Book> findDistinctByAuthorsIn(Collection<Author> authors);
+    // List<Book> findDistinctByAuthorsIn(Collection<Author> authors);
 
     //this works with the flat authors Collection (in current version of spring)
     // so I will not add the extra complexity of defining a Collection<Collection<Authors>>
