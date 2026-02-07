@@ -11,7 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/genres")
 @Slf4j
 public class GenreController {
-    GenreService genreService;
+
+    private final GenreService genreService;
+
+    public GenreController(GenreService genreService) {
+        this.genreService = genreService;
+    }
 
     @GetMapping("")
     public Iterable<Genre> findAll() {

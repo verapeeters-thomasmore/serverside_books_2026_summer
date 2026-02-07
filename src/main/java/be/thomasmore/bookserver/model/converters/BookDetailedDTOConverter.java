@@ -19,11 +19,9 @@ import java.util.List;
 public class BookDetailedDTOConverter {
 
     private final AuthorDTOConverter authorDTOConverter;
-    private final BookDTOConverter bookDTOConverter;
 
-    public BookDetailedDTOConverter(AuthorDTOConverter authorDTOConverter, BookDTOConverter bookDTOConverter) {
+    public BookDetailedDTOConverter(AuthorDTOConverter authorDTOConverter) {
         this.authorDTOConverter = authorDTOConverter;
-        this.bookDTOConverter = bookDTOConverter;
     }
 
     /**
