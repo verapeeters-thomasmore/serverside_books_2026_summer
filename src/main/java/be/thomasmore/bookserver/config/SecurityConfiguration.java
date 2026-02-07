@@ -20,46 +20,33 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
+import org.springframework.security.web.csrf.*;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.util.function.Supplier;
 
-/**
- * Spring Security configuration with CSRF protection for SPA frontend.
- * CSRF is enabled for all /api/** endpoints to protect against cross-site request forgery.
- * The frontend must:
- * 1. Read the XSRF-TOKEN cookie (set by CookieCsrfTokenRepository)
- * 2. Send it back in the X-XSRF-TOKEN header with each state-changing request (POST/PUT/DELETE)
- */
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-    private final DataSource dataSource;
-
-    public SecurityConfiguration(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+    @Autowired
+    private DataSource dataSource;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // Use simple handler that accepts raw token from header (no XOR encoding)
-        CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();
-        requestHandler.setCsrfRequestAttributeName(null); // Opt-out of deferred loading
-
         return http
-                .csrf(csrf -> csrf
+                .csrf((csrf) -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                        .csrfTokenRequestHandler(requestHandler)
-                        .ignoringRequestMatchers("/h2-console/**")
+                        .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler())
                 )
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
                         .requestMatchers("/api/example_auth_request/**").authenticated()
                         .requestMatchers("/api/authenticate/**").authenticated()
                         .requestMatchers("/api/signup/**").permitAll()
@@ -67,27 +54,29 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll()
                 )
-                .securityContext(securityContext -> securityContext.requireExplicitSave(false))
+                .securityContext((securityContext) -> securityContext.requireExplicitSave(false))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                         .maximumSessions(100)
                         .maxSessionsPreventsLogin(true))
                 .headers(headers -> headers
-                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin
+                        )
                 )
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")))
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }
 
-    /**
-     * Configure JDBC authentication with custom queries.
-     */
+
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    public void configureGlobal(AuthenticationManagerBuilder auth)
+            throws Exception {
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
                 .usersByUsernameQuery(
-                        "select username, password, true from booksuser where username = ?")
+                        "select username,password,true from booksuser where username = ?")
                 .authoritiesByUsernameQuery(
                         "select username, role from booksuser where username = ?");
     }
@@ -104,19 +93,49 @@ public class SecurityConfiguration {
     }
 }
 
-/**
- * Filter to ensure the CSRF token cookie is always set on every response.
- * This loads the CSRF token, causing it to be written to the response cookie.
- */
+final class SpaCsrfTokenRequestHandler extends CsrfTokenRequestAttributeHandler {
+    private final CsrfTokenRequestHandler delegate = new XorCsrfTokenRequestAttributeHandler();
+
+    @Override
+    public void handle(HttpServletRequest request, HttpServletResponse response, Supplier<CsrfToken> csrfToken) {
+        /*
+         * Always use XorCsrfTokenRequestAttributeHandler to provide BREACH protection of
+         * the CsrfToken when it is rendered in the response body.
+         */
+        this.delegate.handle(request, response, csrfToken);
+    }
+
+    @Override
+    public String resolveCsrfTokenValue(HttpServletRequest request, CsrfToken csrfToken) {
+        /*
+         * If the request contains a request header, use CsrfTokenRequestAttributeHandler
+         * to resolve the CsrfToken. This applies when a single-page application includes
+         * the header value automatically, which was obtained via a cookie containing the
+         * raw CsrfToken.
+         */
+        if (StringUtils.hasText(request.getHeader(csrfToken.getHeaderName()))) {
+            return super.resolveCsrfTokenValue(request, csrfToken);
+        }
+        /*
+         * In all other cases (e.g. if the request contains a request parameter), use
+         * XorCsrfTokenRequestAttributeHandler to resolve the CsrfToken. This applies
+         * when a server-side rendered form includes the _csrf request parameter as a
+         * hidden input.
+         */
+        return this.delegate.resolveCsrfTokenValue(request, csrfToken);
+    }
+}
+
 final class CsrfCookieFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         CsrfToken csrfToken = (CsrfToken) request.getAttribute("_csrf");
-        if (csrfToken != null) {
-            csrfToken.getToken(); // Force token generation and cookie creation
-        }
+        // Render the token value to a cookie by causing the deferred token to be loaded
+        csrfToken.getToken();
+
         filterChain.doFilter(request, response);
     }
 }
+

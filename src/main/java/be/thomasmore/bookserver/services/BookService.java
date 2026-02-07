@@ -1,6 +1,5 @@
 package be.thomasmore.bookserver.services;
 
-import be.thomasmore.bookserver.model.Author;
 import be.thomasmore.bookserver.model.Book;
 import be.thomasmore.bookserver.model.converters.AuthorDTOConverter;
 import be.thomasmore.bookserver.model.converters.BookDTOConverter;
@@ -9,106 +8,119 @@ import be.thomasmore.bookserver.model.dto.AuthorDTO;
 import be.thomasmore.bookserver.model.dto.BookDTO;
 import be.thomasmore.bookserver.model.dto.BookDetailedDTO;
 import be.thomasmore.bookserver.repositories.BookRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
+/**
+ * Service for book-related business logic.
+ * Uses constructor injection (Spring best practice since Spring 4.3).
+ * Modern approach: builds complete DTOs before returning (no setters on records).
+ */
 @Service
 public class BookService {
-    @Autowired
-    private BookRepository bookRepository;
 
-    @Autowired
-    private BookDTOConverter bookDTOConverter;
-    @Autowired
-    private BookDetailedDTOConverter bookDetailedDTOConverter;
-    @Autowired
-    private AuthorDTOConverter authorDTOConverter;
+    private final BookRepository bookRepository;
+    private final BookDTOConverter bookDTOConverter;
+    private final BookDetailedDTOConverter bookDetailedDTOConverter;
+    private final AuthorDTOConverter authorDTOConverter;
+
+    public BookService(BookRepository bookRepository,
+                       BookDTOConverter bookDTOConverter,
+                       BookDetailedDTOConverter bookDetailedDTOConverter,
+                       AuthorDTOConverter authorDTOConverter) {
+        this.bookRepository = bookRepository;
+        this.bookDTOConverter = bookDTOConverter;
+        this.bookDetailedDTOConverter = bookDetailedDTOConverter;
+        this.authorDTOConverter = authorDTOConverter;
+    }
 
     public List<BookDTO> findAll(String titleKeyWord) {
-        final List<Book> books = titleKeyWord == null ?
-                bookRepository.findAll() :
-                bookRepository.findByTitleContainingIgnoreCase(titleKeyWord);
+        final List<Book> books = titleKeyWord == null
+                ? bookRepository.findAll()
+                : bookRepository.findByTitleContainingIgnoreCase(titleKeyWord);
 
+        // JDK 16+ Stream.toList() - returns unmodifiable list, more concise than Collectors.toList()
         return books.stream()
-                .map(b -> bookDTOConverter.convertToDto(b))
-                .collect(Collectors.toList());
+                .map(bookDTOConverter::convertToDto)
+                .toList();
     }
 
     public BookDetailedDTO findOne(int id) {
-        final Optional<Book> book = bookRepository.findById(id);
-        if (book.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    String.format("Book with id %d does not exist.", id));
+        final Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                        "Book with id %d does not exist.".formatted(id)));
 
-        return bookDetailedDTOConverter.convertToDto(book.get());
+        // Modern approach: gather all data first, then create immutable DTO
+        final List<BookDTO> booksSameAuthorDTO = bookRepository
+                .findDistinctByAuthorsInAndIdNot(book.getAuthors(), id)
+                .stream()
+                .map(bookDTOConverter::convertToDto)
+                .toList();
+
+        // Pass booksSameAuthor at construction time (records are immutable)
+        return bookDetailedDTOConverter.convertToDto(book, booksSameAuthorDTO);
     }
 
     public List<AuthorDTO> authorsForBook(int bookId) {
-        Optional<Book> bookFromDb = bookRepository.findById(bookId);
-        if (bookFromDb.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    String.format("Book with id %d not found.", bookId));
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Book with id %d not found.".formatted(bookId)));
 
-        return bookFromDb.get().getAuthors().stream()
-                .map(a -> authorDTOConverter.convertToDto(a))
-                .collect(Collectors.toList());
+        // JDK 16+ Stream.toList()
+        return book.getAuthors().stream()
+                .map(authorDTOConverter::convertToDto)
+                .toList();
     }
 
     public BookDetailedDTO create(BookDetailedDTO bookDto) {
-        if (bookRepository.findByTitle(bookDto.getTitle()).isPresent())
+        if (bookRepository.findByTitleIgnoreCase(bookDto.title()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                    String.format("Book with title %s already exists.", bookDto.getTitle()));
+                    "Book with title %s already exists.".formatted(bookDto.title()));
+        }
 
-        bookDto.setAuthors(null); //we do not want to update the relation
-        final Book entityToSave = bookDetailedDTOConverter.convertToEntity(bookDto);
+        // Create DTO without authors for entity conversion
+        BookDetailedDTO dtoForConversion = new BookDetailedDTO(
+                bookDto.id(),
+                bookDto.title(),
+                bookDto.description(),
+                null,  // Don't set authors during create
+                null
+        );
+
+        final Book entityToSave = bookDetailedDTOConverter.convertToEntity(dtoForConversion);
+        entityToSave.setId(0); // Ensure Hibernate treats this as a new entity
         final Book bookSaved = bookRepository.save(entityToSave);
         return bookDetailedDTOConverter.convertToDto(bookSaved);
     }
 
     public BookDetailedDTO edit(int id, BookDetailedDTO bookDto) {
-        if (bookDto.getId() != id)
+        if (bookDto.id() != id) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                    String.format("id in book (%d) does not match id in url (%d).", bookDto.getId(), id));
+                    "id in book (%d) does not match id in url (%d).".formatted(bookDto.id(), id));
+        }
 
-        Optional<Book> bookFromDb = bookRepository.findById(id);
-        if (bookFromDb.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    String.format("Book with id %d not found.", id));
+        Book bookFromDb = bookRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Book with id %d not found.".formatted(id)));
 
-        //overwrite fields present in bookDto - relations are not touched
-        Book bookSaved = bookRepository.save(bookDetailedDTOConverter.convertToEntity(bookDto, bookFromDb.get()));
-        return bookDetailedDTOConverter.convertToDto(bookSaved);
-    }
+        if (bookRepository.findByIdNotAndTitleIgnoreCase(id, bookDto.title()).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Another book already exists with title %s.".formatted(bookDto.title()));
+        }
 
-    public BookDetailedDTO editAuthorsForBook(int id, List<Integer> authorIds) {
-        Optional<Book> bookFromDb = bookRepository.findById(id);
-        if (bookFromDb.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    String.format("Book with id %d not found.", id));
-
-        Book book = bookFromDb.get();
-        List<Author> authorIdObjects = (authorIds != null)
-                ? authorIds.stream().map(Author::new).collect(Collectors.toList())
-                : new ArrayList<>();
-        book.setAuthors(authorIdObjects);
-        Book bookSaved = bookRepository.save(book);
+        // Overwrite fields present in bookDto - relations are not touched
+        Book bookSaved = bookRepository.save(bookDetailedDTOConverter.convertToEntity(bookDto, bookFromDb));
         return bookDetailedDTOConverter.convertToDto(bookSaved);
     }
 
     public void delete(int id) {
-        Optional<Book> bookFromDb = bookRepository.findById(id);
-        if (bookFromDb.isEmpty())
+        if (!bookRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    String.format("Book with id %d not found.", id));
-
+                    "Book with id %d not found.".formatted(id));
+        }
         bookRepository.deleteById(id);
     }
 }

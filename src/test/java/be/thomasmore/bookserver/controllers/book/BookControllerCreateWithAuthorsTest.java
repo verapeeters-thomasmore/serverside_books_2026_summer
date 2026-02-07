@@ -5,12 +5,11 @@ import be.thomasmore.bookserver.model.Book;
 import be.thomasmore.bookserver.model.dto.AuthorDTO;
 import be.thomasmore.bookserver.model.dto.BookDetailedDTO;
 import be.thomasmore.bookserver.repositories.BookRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.jdbc.Sql;
-
-import jakarta.transaction.Transactional;
 
 import java.util.List;
 
@@ -38,11 +37,11 @@ public class BookControllerCreateWithAuthorsTest extends AbstractIntegrationTest
     @Transactional
     public void createBookWithAuthorIdShouldNotSetTheRelation() throws Exception {
         final String BOOK_TITLE = "Create a book with an author id";
-        AuthorDTO authorDto = AuthorDTO.builder().id(1).build(); // author 1 exists
-        BookDetailedDTO newBookDto = BookDetailedDTO.builder()
-                .title(BOOK_TITLE)
-                .authors(List.of(authorDto))
-                .build();
+        // Using record constructor
+        AuthorDTO authorDto = new AuthorDTO(1, null); // author 1 exists
+        // Using record constructor - 5 fields: id, title, description, authors, booksSameAuthor
+        BookDetailedDTO newBookDto = new BookDetailedDTO(
+                0, BOOK_TITLE, null, List.of(authorDto), null);
 
         mockMvc.perform(getMockRequestPost("/api/books/", newBookDto))
                 .andExpect(status().isOk())
@@ -62,11 +61,10 @@ public class BookControllerCreateWithAuthorsTest extends AbstractIntegrationTest
     public void createBookWithFilledAuthorDTOShouldNotSetTheRelation() throws Exception {
         final String BOOK_TITLE = "Create a book with a filled author object";
         final String AUTHOR_NAME = "Adrian Vandenhoof";
-        AuthorDTO authorDTO = AuthorDTO.builder().id(1).name(AUTHOR_NAME).build();
-        BookDetailedDTO newBookDto = BookDetailedDTO.builder()
-                .title(BOOK_TITLE)
-                .authors(List.of(authorDTO))
-                .build();
+        // Using record constructor
+        AuthorDTO authorDTO = new AuthorDTO(1, AUTHOR_NAME);
+        BookDetailedDTO newBookDto = new BookDetailedDTO(
+                0, BOOK_TITLE, null, List.of(authorDTO), null);
 
         mockMvc.perform(getMockRequestPost("/api/books/", newBookDto))
                 .andExpect(status().isOk())

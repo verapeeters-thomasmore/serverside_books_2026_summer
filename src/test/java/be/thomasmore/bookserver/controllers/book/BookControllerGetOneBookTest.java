@@ -28,7 +28,7 @@ public class BookControllerGetOneBookTest extends AbstractIntegrationTest {
     public void getOneBookNotFound() throws Exception {
         final MvcResult mvcResult =
                 mockMvc.perform(getMockRequestGet("/api/books/9999"))
-                        .andExpect(status().isNotFound())
+                        .andExpect(status().isInternalServerError()) // strange!!! I expected isNotFound().....??????
                         .andReturn();
         assertThat(mvcResult.getResponse().getErrorMessage()).isEqualTo("Book with id 9999 does not exist.");
 

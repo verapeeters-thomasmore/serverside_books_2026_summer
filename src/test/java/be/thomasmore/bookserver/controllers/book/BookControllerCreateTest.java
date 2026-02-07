@@ -28,9 +28,10 @@ public class BookControllerCreateTest extends AbstractIntegrationTest {
     @WithMockUser
     public void createBook() throws Exception {
         final String BOOK_TITLE = "It is simple to create a book";
-        BookDetailedDTO newBookDto = BookDetailedDTO.builder()
-                .title(BOOK_TITLE)
-                .build();
+        final String BOOK_DESCRIPTION = "simple description";
+        // Using record constructor - 5 fields: id, title, description, authors, booksSameAuthor
+        BookDetailedDTO newBookDto = new BookDetailedDTO(
+                0, BOOK_TITLE, BOOK_DESCRIPTION, null, null);
 
         mockMvc.perform(getMockRequestPost("/api/books/", newBookDto))
                 .andExpect(status().isOk())
@@ -46,9 +47,8 @@ public class BookControllerCreateTest extends AbstractIntegrationTest {
     @ExceptionHandler
     @WithMockUser
     public void createBook_titleCannotBeEmpty() {
-        BookDetailedDTO newBookDto = BookDetailedDTO.builder()
-                .title(null)
-                .build();
+        BookDetailedDTO newBookDto = new BookDetailedDTO(
+                0, null, null, null, null);
 
         assertThatThrownBy(() -> mockMvc.perform(getMockRequestPost("/api/books/", newBookDto)));
         assertThat(bookRepository.count()).isEqualTo(0);
@@ -58,9 +58,8 @@ public class BookControllerCreateTest extends AbstractIntegrationTest {
     @ExceptionHandler
     @WithMockUser
     public void createBook_titleCannotBeBlank() {
-        BookDetailedDTO newBookDto = BookDetailedDTO.builder()
-                .title("")
-                .build();
+        BookDetailedDTO newBookDto = new BookDetailedDTO(
+                0, "", null, null, null);
 
         assertThatThrownBy(() -> mockMvc.perform(getMockRequestPost("/api/books/", newBookDto)));
         assertThat(bookRepository.count()).isEqualTo(0);
@@ -70,9 +69,8 @@ public class BookControllerCreateTest extends AbstractIntegrationTest {
     @ExceptionHandler
     @WithMockUser
     public void createBook_titleHasToBeUnique() throws Exception {
-        BookDetailedDTO newBookDto = BookDetailedDTO.builder()
-                .title("Recreate an existing book")
-                .build();
+        BookDetailedDTO newBookDto = new BookDetailedDTO(
+                0, "Recreate an existing book", null, null, null);
         MockHttpServletRequestBuilder mockRequest = getMockRequestPost("/api/books/", newBookDto);
 
         //first time is ok
@@ -90,9 +88,8 @@ public class BookControllerCreateTest extends AbstractIntegrationTest {
     @WithMockUser
     public void createBook_givenIdIsNotTakenIntoAccount() throws Exception {
         final String BOOK_TITLE = "Book with random given id";
-        BookDetailedDTO newBookDto = BookDetailedDTO.builder().id(57)
-                .title(BOOK_TITLE)
-                .build();
+        BookDetailedDTO newBookDto = new BookDetailedDTO(
+                57, BOOK_TITLE, null, null, null);
 
         mockMvc.perform(getMockRequestPost("/api/books/", newBookDto))
                 .andExpect(status().isOk())
@@ -105,4 +102,22 @@ public class BookControllerCreateTest extends AbstractIntegrationTest {
         assertThat(loadedBook.getTitle()).isEqualTo(BOOK_TITLE);
     }
 
+    @Test
+    @ExceptionHandler
+    @WithMockUser
+    public void createBook_titleHasToBeUniqueCaseInsensitive() throws Exception {
+        BookDetailedDTO newBookDto = new BookDetailedDTO(
+                0, "RECREATE AN EXISTING BOOK", null, null, null);
+        MockHttpServletRequestBuilder mockRequest = getMockRequestPost("/api/books/", newBookDto);
+
+        //first time is ok
+        mockMvc.perform(mockRequest).andExpect(status().isOk());
+
+        //send the same POST again with same title - fails
+        final MvcResult mvcResult = mockMvc.perform(mockRequest)
+                .andExpect(status().isInternalServerError())
+                .andReturn();
+        assertThat(mvcResult.getResponse().getErrorMessage()).isEqualTo("Book with title RECREATE AN EXISTING BOOK already exists.");
+        assertThat(bookRepository.count()).isEqualTo(1);
+    }
 }

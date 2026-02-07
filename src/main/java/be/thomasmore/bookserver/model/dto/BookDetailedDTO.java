@@ -1,22 +1,25 @@
 package be.thomasmore.bookserver.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.List;
 
-import java.util.Collection;
-
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Data
-public class BookDetailedDTO {
-    private int id;
-    private String title;
-
-    //more data will be inserted here later...
-
-    private Collection<AuthorDTO> authors;
+/**
+ * Detailed book response DTO (JDK 16+ record).
+ * Immutable data carrier - all fields set at construction.
+ * booksSameAuthor is computed and passed at construction time.
+ */
+public record BookDetailedDTO(
+        int id,
+        String title,
+        String description,
+        List<AuthorDTO> authors,
+        List<BookDTO> booksSameAuthor
+) {
+    /**
+     * Compact constructor for validation/normalization.
+     */
+    public BookDetailedDTO {
+        // Ensure lists are never null for consistent API responses
+        authors = authors == null ? List.of() : authors;
+        booksSameAuthor = booksSameAuthor == null ? List.of() : booksSameAuthor;
+    }
 }
-

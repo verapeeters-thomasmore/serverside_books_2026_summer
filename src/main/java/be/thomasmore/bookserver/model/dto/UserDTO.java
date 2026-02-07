@@ -1,14 +1,12 @@
 package be.thomasmore.bookserver.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class UserDTO {
-    private String username;
-    private String password;
-    private String email;
+/**
+ * Record for user data transfer.
+ * JDK 16+ feature - immutable data carrier.
+ */
+public record UserDTO(
+        String username,
+        String password,
+        String email
+) {
 }

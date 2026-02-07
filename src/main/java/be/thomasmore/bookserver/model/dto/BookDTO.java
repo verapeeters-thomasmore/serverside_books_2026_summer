@@ -1,16 +1,15 @@
 package be.thomasmore.bookserver.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.List;
 
-import java.util.Collection;
-
-@NoArgsConstructor
-@Data
-public class BookDTO {
-    private int id;
-    private String title;
-    private Collection<AuthorDTO> authors;
+/**
+ * Record for basic book information with authors.
+ * JDK 16+ feature - immutable data carrier.
+ * Uses List instead of Collection for better API clarity (JDK 21+ sequenced collections).
+ */
+public record BookDTO(
+        int id,
+        String title,
+        List<AuthorDTO> authors
+) {
 }
-

@@ -5,20 +5,25 @@ import be.thomasmore.bookserver.model.dto.BookDTO;
 import be.thomasmore.bookserver.model.dto.BookDetailedDTO;
 import be.thomasmore.bookserver.services.BookService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.validation.Valid;
-import java.util.List;
-
+/**
+ * REST controller for book operations.
+ * Uses constructor injection (Spring best practice since Spring 4.3).
+ */
 @RestController
 @RequestMapping("/api/books")
 @Slf4j
 public class BookController {
-    @Autowired
-    private BookService bookService;
+
+    private final BookService bookService;
+
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
+    }
 
     @Operation(summary = "list of books in the database.",
             description = "If Request Parameter <b>titleKeyWord</b> is given: " +
@@ -73,15 +78,6 @@ public class BookController {
     public Iterable<AuthorDTO> authorsForBook(@PathVariable int id) {
         log.info(String.format("##### get authors for book with id %d", id));
         return bookService.authorsForBook(id);
-    }
-
-    @Operation(summary = "update the authors for the given book. ",
-            description = "The authors Collection has to contain ids of existing authors. </br>" +
-                    "Returns updated book containing id and name of the authors. ")
-    @PutMapping("{id}/authors")
-    public BookDetailedDTO editAuthorsForBook(@PathVariable int id, @RequestBody List<Integer> authorIds) {
-        log.info(String.format("##### edit authors for book %d", id));
-        return bookService.editAuthorsForBook(id, authorIds);
     }
 
     @DeleteMapping("{id}")

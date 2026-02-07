@@ -2,56 +2,98 @@ package be.thomasmore.bookserver.model.converters;
 
 import be.thomasmore.bookserver.model.Author;
 import be.thomasmore.bookserver.model.Book;
+import be.thomasmore.bookserver.model.dto.AuthorDTO;
+import be.thomasmore.bookserver.model.dto.BookDTO;
 import be.thomasmore.bookserver.model.dto.BookDetailedDTO;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.util.List;
 
+/**
+ * Converter for Book entity to/from BookDetailedDTO.
+ * Uses constructor injection (Spring best practice since Spring 4.3).
+ * Manual mapping for records - no ModelMapper needed.
+ */
 @Component
 public class BookDetailedDTOConverter {
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final AuthorDTOConverter authorDTOConverter;
+    private final BookDTOConverter bookDTOConverter;
 
-    /**
-     * @param book the entity from the db
-     * @return a BookDetailedDTO object to send to the client.
-     * The BookDetailedDTO contains an array of  AuthorDto
-     * so that the client does not need to do a second request to display this basic info.
-     */
-    public BookDetailedDTO convertToDto(Book book) {
-        return modelMapper.map(book, BookDetailedDTO.class);
+    public BookDetailedDTOConverter(AuthorDTOConverter authorDTOConverter, BookDTOConverter bookDTOConverter) {
+        this.authorDTOConverter = authorDTOConverter;
+        this.bookDTOConverter = bookDTOConverter;
     }
 
     /**
-     * @param bookDto: the data from client that has to be converted
-     * @param book:   the original book entity (from db) - this object will be overwritten with the data from bookDto
-     * @return the modified book entity object - ready to save in the database
-     * Do not overwrite the authors-array.
-     * Use the PUT request api/books/{id}/authors to update the authors for a book.
+     * Convert entity to DTO without booksSameAuthor.
+     * Use convertToDto with booksSameAuthor parameter for complete DTO.
+     *
+     * @param book the entity from the db
+     * @return BookDetailedDTO record (booksSameAuthor will be empty)
      */
-    public Book convertToEntity(BookDetailedDTO bookDto, Book book) {
-        modelMapper.map(bookDto, book);
+    public BookDetailedDTO convertToDto(Book book) {
+        return convertToDto(book, List.of());
+    }
+
+    /**
+     * Convert entity to complete DTO with booksSameAuthor.
+     * Modern approach: all data gathered before DTO creation.
+     *
+     * @param book            the entity from the db
+     * @param booksSameAuthor pre-computed list of books by same authors
+     * @return complete BookDetailedDTO record
+     */
+    public BookDetailedDTO convertToDto(Book book, List<BookDTO> booksSameAuthor) {
+        List<AuthorDTO> authorDtos = book.getAuthors() == null
+                ? List.of()
+                : book.getAuthors().stream()
+                .map(authorDTOConverter::convertToDto)
+                .toList();
+
+        return new BookDetailedDTO(
+                book.getId(),
+                book.getTitle(),
+                null, // description not in this simpler entity
+                authorDtos,
+                booksSameAuthor
+        );
+    }
+
+    /**
+     * Convert DTO to new entity for creation.
+     *
+     * @param bookDto the data from client (can contain author IDs)
+     * @return new Book entity ready to save
+     */
+    public Book convertToEntity(BookDetailedDTO bookDto) {
+        Book book = new Book();
+        book.setId(bookDto.id());
+        book.setTitle(bookDto.title());
+
+        // Handle author references (only IDs matter for relationship)
+        if (bookDto.authors() != null && !bookDto.authors().isEmpty()) {
+            List<Author> authors = bookDto.authors().stream()
+                    .map(a -> new Author(a.id()))
+                    .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+            book.setAuthors(authors);
+        }
+
         return book;
     }
 
     /**
-     * @param bookDto: can contain an array of AuthorDto objects.
-     *                Each AuthorDto has to contain the id of an existing author.
-     * @return the book entity object - ready to save in the database
+     * Update existing entity with DTO data.
+     * Note: authors relationship is NOT touched - use PUT /api/books/{id}/authors
+     *
+     * @param bookDto the data from client
+     * @param book    the original book entity (from db)
+     * @return the modified book entity ready to save
      */
-    public Book convertToEntity(BookDetailedDTO bookDto) {
-        final Book book = modelMapper.map(bookDto, Book.class);
-
-        //updates book-author relation, not the author objects!
-        if (book.getAuthors() != null) {
-            book.setAuthors(book.getAuthors().stream()
-                    .map(a -> new Author(a.getId()))
-                    .collect(Collectors.toCollection(ArrayList::new)));
-        }
+    public Book convertToEntity(BookDetailedDTO bookDto, Book book) {
+        book.setTitle(bookDto.title());
+        // Don't touch authors - use PUT /api/books/{id}/authors
         return book;
     }
 }

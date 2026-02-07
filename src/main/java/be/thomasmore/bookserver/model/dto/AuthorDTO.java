@@ -1,17 +1,11 @@
 package be.thomasmore.bookserver.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.util.Collection;
-
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Data
-public class AuthorDTO {
-    private int id;
-    private String name;
+/**
+ * Record for basic author information.
+ * JDK 16+ feature - immutable data carrier with automatic equals(), hashCode(), toString().
+ */
+public record AuthorDTO(
+        int id,
+        String name
+) {
 }
