@@ -123,48 +123,50 @@ VALUES (9, 'Bibliotheek Kortrijk', 'Kortrijk', 1900, 'Marie Dubois');
 INSERT INTO LIBRARY (ID, LIBRARY_NAME, LOCATION, ESTABLISHED_YEAR, MANAGER_NAME)
 VALUES (10, 'Bib Kiel', 'Antwerpen', 1955, 'Koen Maes');
 
--- Boek 1 (Oryx and Crake) ligt in Mechelen en Antwerpen (Permeke)
+-- Boek 1 (Oryx and Crake) ligt in 4 verschillende steden
 INSERT INTO BOOK_LIBRARIES (BOOKS_ID, LIBRARIES_ID)
 VALUES ((SELECT ID FROM BOOK WHERE TITLE = 'Oryx and Crake'),
         (SELECT ID FROM LIBRARY WHERE LIBRARY_NAME = 'Bib Mechelen Centrum'));
-
 INSERT INTO BOOK_LIBRARIES (BOOKS_ID, LIBRARIES_ID)
 VALUES ((SELECT ID FROM BOOK WHERE TITLE = 'Oryx and Crake'),
         (SELECT ID FROM LIBRARY WHERE LIBRARY_NAME = 'Permeke Bibliotheek'));
-
--- Boek 2 (The year of the flood) ligt in Gent (De Krook)
 INSERT INTO BOOK_LIBRARIES (BOOKS_ID, LIBRARIES_ID)
-VALUES ((SELECT ID FROM BOOK WHERE TITLE = 'The year of the flood'),
-        (SELECT ID FROM LIBRARY WHERE LIBRARY_NAME = 'De Krook'));
-
--- Boek 3 (MaddAddam) ligt in Leuven en Brussel
+VALUES ((SELECT ID FROM BOOK WHERE TITLE = 'Oryx and Crake'), (SELECT ID FROM LIBRARY WHERE LIBRARY_NAME = 'De Krook'));
 INSERT INTO BOOK_LIBRARIES (BOOKS_ID, LIBRARIES_ID)
-VALUES ((SELECT ID FROM BOOK WHERE TITLE = 'MaddAddam'),
+VALUES ((SELECT ID FROM BOOK WHERE TITLE = 'Oryx and Crake'),
         (SELECT ID FROM LIBRARY WHERE LIBRARY_NAME = 'Bib Leuven'));
 
-INSERT INTO BOOK_LIBRARIES (BOOKS_ID, LIBRARIES_ID)
-VALUES ((SELECT ID FROM BOOK WHERE TITLE = 'MaddAddam'),
-        (SELECT ID FROM LIBRARY WHERE LIBRARY_NAME = 'Muntpunt'));
+-- Boek 2 (The year of the flood) krijgt GEEN koppelingen (voor de NULL-test in Vraag 5)
 
--- Boek 4 (1Q84) ligt in Antwerpen (Linkeroever)
+-- Boek 3 (MaddAddam) ligt in 1 bibliotheek
+INSERT INTO BOOK_LIBRARIES (BOOKS_ID, LIBRARIES_ID)
+VALUES ((SELECT ID FROM BOOK WHERE TITLE = 'MaddAddam'), (SELECT ID FROM LIBRARY WHERE LIBRARY_NAME = 'Muntpunt'));
+
+-- Boek 4 (1Q84) ligt in 2 bibliotheken in dezelfde stad (Antwerpen)
 INSERT INTO BOOK_LIBRARIES (BOOKS_ID, LIBRARIES_ID)
 VALUES ((SELECT ID FROM BOOK WHERE TITLE = '1Q84'),
         (SELECT ID FROM LIBRARY WHERE LIBRARY_NAME = 'Bibliotheek Linkeroever'));
+INSERT INTO BOOK_LIBRARIES (BOOKS_ID, LIBRARIES_ID)
+VALUES ((SELECT ID FROM BOOK WHERE TITLE = '1Q84'), (SELECT ID FROM LIBRARY WHERE LIBRARY_NAME = 'Bib Kiel'));
 
--- Boek 5 (De opwindvogelkronieken) ligt in Gent (Ledeberg en Mariakerke)
+-- Boek 5 (De opwindvogelkronieken) ligt in 5 verschillende bibliotheken (hoge spreiding)
+INSERT INTO BOOK_LIBRARIES (BOOKS_ID, LIBRARIES_ID)
+VALUES ((SELECT ID FROM BOOK WHERE TITLE = 'De opwindvogelkronieken'),
+        (SELECT ID FROM LIBRARY WHERE LIBRARY_NAME = 'De Krook'));
 INSERT INTO BOOK_LIBRARIES (BOOKS_ID, LIBRARIES_ID)
 VALUES ((SELECT ID FROM BOOK WHERE TITLE = 'De opwindvogelkronieken'),
         (SELECT ID FROM LIBRARY WHERE LIBRARY_NAME = 'Filiaal Ledeberg'));
-
 INSERT INTO BOOK_LIBRARIES (BOOKS_ID, LIBRARIES_ID)
 VALUES ((SELECT ID FROM BOOK WHERE TITLE = 'De opwindvogelkronieken'),
         (SELECT ID FROM LIBRARY WHERE LIBRARY_NAME = 'Filiaal Mariakerke'));
+INSERT INTO BOOK_LIBRARIES (BOOKS_ID, LIBRARIES_ID)
+VALUES ((SELECT ID FROM BOOK WHERE TITLE = 'De opwindvogelkronieken'),
+        (SELECT ID FROM LIBRARY WHERE LIBRARY_NAME = 'Bibliotheek Kortrijk'));
+INSERT INTO BOOK_LIBRARIES (BOOKS_ID, LIBRARIES_ID)
+VALUES ((SELECT ID FROM BOOK WHERE TITLE = 'De opwindvogelkronieken'),
+        (SELECT ID FROM LIBRARY WHERE LIBRARY_NAME = 'Bib Mechelen Centrum'));
 
--- Boek 6 (Design Patterns) ligt in Kortrijk en Antwerpen (Kiel)
+-- Boek 6 (Design Patterns) ligt in 1 bibliotheek
 INSERT INTO BOOK_LIBRARIES (BOOKS_ID, LIBRARIES_ID)
 VALUES ((SELECT ID FROM BOOK WHERE TITLE = 'Design Patterns'),
         (SELECT ID FROM LIBRARY WHERE LIBRARY_NAME = 'Bibliotheek Kortrijk'));
-
-INSERT INTO BOOK_LIBRARIES (BOOKS_ID, LIBRARIES_ID)
-VALUES ((SELECT ID FROM BOOK WHERE TITLE = 'Design Patterns'),
-        (SELECT ID FROM LIBRARY WHERE LIBRARY_NAME = 'Bib Kiel'));

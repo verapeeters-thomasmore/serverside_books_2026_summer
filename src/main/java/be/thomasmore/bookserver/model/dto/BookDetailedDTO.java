@@ -18,6 +18,7 @@ public class BookDetailedDTO {
     private String description;
 
     //more data will be inserted here later...
+    private Integer totalStockAccrossLibraries;
 
     private Collection<AuthorDTO> authors;
 }

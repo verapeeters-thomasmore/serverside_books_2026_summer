@@ -42,12 +42,16 @@ public class BookService {
     }
 
     public BookDetailedDTO findOne(int id) {
-        final Optional<Book> book = bookRepository.findById(id);
-        if (book.isEmpty())
+        final Optional<Book> bookOptional = bookRepository.findById(id);
+        if (bookOptional.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     String.format("Book with id %d does not exist.", id));
 
-        return bookDetailedDTOConverter.convertToDto(book.get());
+        Book book = bookOptional.get();
+        BookDetailedDTO bookDetailedDTO = bookDetailedDTOConverter.convertToDto(book);
+        if (!book.getLibraries().isEmpty())
+            bookDetailedDTO.setTotalStockAccrossLibraries(book.getLibraries().size());
+        return bookDetailedDTO;
     }
 
     public List<AuthorDTO> authorsForBook(int bookId) {
