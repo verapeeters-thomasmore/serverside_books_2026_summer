@@ -22,26 +22,26 @@ insert into BOOK (TITLE)
 values ('Design Patterns');/*6*/
 
 insert into author (NAME, DESCRIPTION, COUNTRY)
-values ( 'Margaret Atwood',
-         'Margaret Atwood was born in 1939 in Ottawa and grew up in northern Ontario, Quebec, and Toronto. Throughout her writing career, Margaret Atwood has received numerous awards and honourary degrees.',
-         'Canada'); /*1*/
+values ('Margaret Atwood',
+        'Margaret Atwood was born in 1939 in Ottawa and grew up in northern Ontario, Quebec, and Toronto. Throughout her writing career, Margaret Atwood has received numerous awards and honourary degrees.',
+        'Canada'); /*1*/
 
 insert into author (NAME, DESCRIPTION, COUNTRY)
-values ( 'Haruki Murakami',
-         'Haruki Murakami  is a popular contemporary Japanese writer and translator. His work has been described as ''easily accessible, yet profoundly complex''.',
-         'Japan'); /*2*/
+values ('Haruki Murakami',
+        'Haruki Murakami  is a popular contemporary Japanese writer and translator. His work has been described as ''easily accessible, yet profoundly complex''.',
+        'Japan'); /*2*/
 
 insert into author (NAME, DESCRIPTION, COUNTRY)
-values ( 'Erich Gamma', 'One of the ''Gang of four''.', 'Switzerland'); /*3*/
+values ('Erich Gamma', 'One of the ''Gang of four''.', 'Switzerland'); /*3*/
 
 insert into author (NAME, DESCRIPTION, COUNTRY)
-values ( 'Richard Helm', 'One of the ''Gang of four''.', 'Australia'); /*4*/
+values ('Richard Helm', 'One of the ''Gang of four''.', 'Australia'); /*4*/
 
 insert into author (NAME, DESCRIPTION, COUNTRY)
-values ( 'Ralph Johnson', 'One of the ''Gang of four''.', 'USA'); /*5*/
+values ('Ralph Johnson', 'One of the ''Gang of four''.', 'USA'); /*5*/
 
 insert into author (NAME, DESCRIPTION, COUNTRY)
-values ( 'John Vlissides', 'One of the ''Gang of four''.', 'USA'); /*6*/
+values ('John Vlissides', 'One of the ''Gang of four''.', 'USA'); /*6*/
 
 insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID)
 values (select id from BOOK where title= 'Oryx and Crake',
@@ -97,7 +97,30 @@ VALUES ('marie', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm',
 INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE)
 VALUES ('vera', '$2y$12$KF3spKP4kgf59.6zYkmjyeYaW2.4ZxV16Grpw1FPsFnzYq68kswJ6', 'USER'); -- vera
 
-insert into SERIE(NAME) values ('Harry Potter');
-insert into SERIE(NAME) values ('Anderland');
+insert into SERIE(NAME)
+values ('Harry Potter');
+insert into SERIE(NAME)
+values ('Anderland');
 
+
+INSERT INTO LIBRARY (ID, LIBRARY_NAME, LOCATION, ESTABLISHED_YEAR, MANAGER_NAME)
+VALUES (1, 'Bib Mechelen', 'Mechelen', 1920, 'Vera Peeters');
+INSERT INTO LIBRARY (ID, LIBRARY_NAME, LOCATION, ESTABLISHED_YEAR, MANAGER_NAME)
+VALUES (2, 'Permeke Bibliotheek', 'Antwerpen', 2005, 'Luc Janssens');
+INSERT INTO LIBRARY (ID, LIBRARY_NAME, LOCATION, ESTABLISHED_YEAR, MANAGER_NAME)
+VALUES (3, 'De Krook', 'Gent', 2017, 'Annelies De Smet');
+INSERT INTO LIBRARY (ID, LIBRARY_NAME, LOCATION, ESTABLISHED_YEAR, MANAGER_NAME)
+VALUES (4, 'Bib Leuven', 'Leuven', 1860, 'Pieter Willems');
+INSERT INTO LIBRARY (ID, LIBRARY_NAME, LOCATION, ESTABLISHED_YEAR, MANAGER_NAME)
+VALUES (5, 'Muntpunt', 'Brussel', 2011, 'Sarah Mertens');
+INSERT INTO LIBRARY (ID, LIBRARY_NAME, LOCATION, ESTABLISHED_YEAR, MANAGER_NAME)
+VALUES (6, 'Openbare Bibliotheek Brugge', 'Brugge', 1798, 'Jan Van Damme');
+INSERT INTO LIBRARY (ID, LIBRARY_NAME, LOCATION, ESTABLISHED_YEAR, MANAGER_NAME)
+VALUES (7, 'Bib Hasselt', 'Hasselt', 1946, 'Ellen Claes');
+INSERT INTO LIBRARY (ID, LIBRARY_NAME, LOCATION, ESTABLISHED_YEAR, MANAGER_NAME)
+VALUES (8, 'ARhus', 'Roeselare', 2014, 'Tom Verstraete');
+INSERT INTO LIBRARY (ID, LIBRARY_NAME, LOCATION, ESTABLISHED_YEAR, MANAGER_NAME)
+VALUES (9, 'Bibliotheek Kortrijk', 'Kortrijk', 1900, 'Marie Dubois');
+INSERT INTO LIBRARY (ID, LIBRARY_NAME, LOCATION, ESTABLISHED_YEAR, MANAGER_NAME)
+VALUES (10, 'Bib Turnhout', 'Turnhout', 1955, 'Koen Maes');
 
