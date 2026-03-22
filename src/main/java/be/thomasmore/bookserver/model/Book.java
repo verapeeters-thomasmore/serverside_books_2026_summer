@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
+import java.util.Collection;
 import java.util.List;
 
 @NoArgsConstructor
@@ -25,10 +27,14 @@ public class Book {
     @NotNull
     private String title;
 
-    @Column(length=1024)
+    @Column(length = 1024)
     private String description;
 
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Author> authors;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Collection<Library> libraries;
+
 }
 
