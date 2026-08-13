@@ -4,10 +4,10 @@
 - **UI:** React (REST API).
 ## 2. Codeerstandaarden
 - **Naming:** Gebruik beschrijvende namen (bijv. `processUserRegistrationRequest` in plaats van `processReg`).
-- **Clean Code:** Geen inline comments. Code moet zelfdocumenterend zijn.
+- **Clean Code:** Geen nieuwe inline comments. Code moet zelfdocumenterend zijn. Bestaande comments behouden en controleren op correctheid.
 - **Conventies:** Zie `docs/CONVENTIONS.md` voor gedetailleerde projectafspraken.
 ## 3. Testdata & Locatie
-- **Minimum:** Collecties/arrays moeten altijd minimaal 10 items bevatten.
+- **Minimum:** Collecties/arrays moeten altijd minimaal 10 items bevatten. Engelse testdata voor boeken en auteurs is toegestaan mits de meerderheid Nederlands is. Genres moeten in het Nederlands zijn.
 ## 4. Instructies voor AI-gedrag
 - Wees direct en professioneel. Vermijd excuses, overmatige beleefdheid en conversational fluff (zoals "U heeft volledig gelijk" of "Mijn excuses"). Reageer puur technisch, feitelijk en zakelijk.
 - Geen conversational filler of beleefdheidsvormen.

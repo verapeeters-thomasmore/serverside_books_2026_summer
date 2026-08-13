@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
+// Table name is set to BOOKSUSER because USER is a reserved keyword in H2 database.
 @Table(name = "BOOKSUSER")
 @Data
 @NoArgsConstructor

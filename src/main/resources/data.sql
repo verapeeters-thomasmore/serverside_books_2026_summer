@@ -1,91 +1,102 @@
-insert into BOOK (TITLE)
-values ('Oryx and Crake'); /*1*/
+insert into BOOK (TITLE) values ('Oryx and Crake');
+insert into BOOK (TITLE) values ('The year of the flood');
+insert into BOOK (TITLE) values ('MaddAddam');
+insert into BOOK (TITLE) values ('1Q84');
+insert into BOOK (TITLE) values ('De opwindvogelkronieken');
+insert into BOOK (TITLE) values ('Design Patterns');
+insert into BOOK (TITLE) values ('Het verdriet van België');
+insert into BOOK (TITLE) values ('De kapellekensbaan');
+insert into BOOK (TITLE) values ('Kaas');
+insert into BOOK (TITLE) values ('De leeuw van Vlaanderen');
+insert into BOOK (TITLE) values ('Houtekiet');
+insert into BOOK (TITLE) values ('Will');
+insert into BOOK (TITLE) values ('Sprakeloos');
+insert into BOOK (TITLE) values ('Vallen');
+insert into BOOK (TITLE) values ('De helaasheid der dingen');
+insert into BOOK (TITLE) values ('Knielen op een bed violen');
+insert into BOOK (TITLE) values ('Max Havelaar');
+insert into BOOK (TITLE) values ('Karakter');
+insert into BOOK (TITLE) values ('De ontdekking van de hemel');
+insert into BOOK (TITLE) values ('De donkere kamer van Damokles');
+insert into BOOK (TITLE) values ('De avonden');
+insert into BOOK (TITLE) values ('De engelenmaker');
+insert into BOOK (TITLE) values ('Grand Hotel Europa');
+insert into BOOK (TITLE) values ('Lampje');
+insert into BOOK (TITLE) values ('Things Fall Apart');
 
-insert into BOOK (TITLE)
-values ('The year of the flood');/*2*/
+insert into AUTHOR (NAME) values ('Margaret Atwood');
+insert into AUTHOR (NAME) values ('Haruki Murakami');
+insert into AUTHOR (NAME) values ('Erich Gamma');
+insert into AUTHOR (NAME) values ('Richard Helm');
+insert into AUTHOR (NAME) values ('Ralph Johnson');
+insert into AUTHOR (NAME) values ('John Vlissides');
+insert into AUTHOR (NAME) values ('Hugo Claus');
+insert into AUTHOR (NAME) values ('Louis Paul Boon');
+insert into AUTHOR (NAME) values ('Willem Elsschot');
+insert into AUTHOR (NAME) values ('Hendrik Conscience');
+insert into AUTHOR (NAME) values ('Gerard Walschap');
+insert into AUTHOR (NAME) values ('Jeroen Olyslaegers');
+insert into AUTHOR (NAME) values ('Tom Lanoye');
+insert into AUTHOR (NAME) values ('Anne Provoost');
+insert into AUTHOR (NAME) values ('Dimitri Verhulst');
+insert into AUTHOR (NAME) values ('Jan Siebelink');
+insert into AUTHOR (NAME) values ('Multatuli');
+insert into AUTHOR (NAME) values ('F. Bordewijk');
+insert into AUTHOR (NAME) values ('Harry Mulisch');
+insert into AUTHOR (NAME) values ('W.F. Hermans');
+insert into AUTHOR (NAME) values ('Gerard Reve');
+insert into AUTHOR (NAME) values ('Stefan Brijs');
+insert into AUTHOR (NAME) values ('Ilja Leonard Pfeijffer');
+insert into AUTHOR (NAME) values ('Annet Schaap');
+insert into AUTHOR (NAME) values ('Chinua Achebe');
 
-insert into BOOK (TITLE)
-values ('MaddAddam');/*3*/
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'Oryx and Crake', select id from AUTHOR where name = 'Margaret Atwood');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'The year of the flood', select id from AUTHOR where name = 'Margaret Atwood');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'MaddAddam', select id from AUTHOR where name = 'Margaret Atwood');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= '1Q84', select id from AUTHOR where name = 'Haruki Murakami');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'De opwindvogelkronieken', select id from AUTHOR where name = 'Haruki Murakami');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'Design Patterns', select id from AUTHOR where name = 'Erich Gamma');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'Design Patterns', select id from AUTHOR where name = 'Richard Helm');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'Design Patterns', select id from AUTHOR where name = 'Ralph Johnson');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'Design Patterns', select id from AUTHOR where name = 'John Vlissides');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'Het verdriet van België', select id from AUTHOR where name = 'Hugo Claus');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'De kapellekensbaan', select id from AUTHOR where name = 'Louis Paul Boon');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'Kaas', select id from AUTHOR where name = 'Willem Elsschot');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'De leeuw van Vlaanderen', select id from AUTHOR where name = 'Hendrik Conscience');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'Houtekiet', select id from AUTHOR where name = 'Gerard Walschap');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'Will', select id from AUTHOR where name = 'Jeroen Olyslaegers');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'Sprakeloos', select id from AUTHOR where name = 'Tom Lanoye');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'Vallen', select id from AUTHOR where name = 'Anne Provoost');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'De helaasheid der dingen', select id from AUTHOR where name = 'Dimitri Verhulst');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'Knielen op een bed violen', select id from AUTHOR where name = 'Jan Siebelink');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'Max Havelaar', select id from AUTHOR where name = 'Multatuli');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'Karakter', select id from AUTHOR where name = 'F. Bordewijk');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'De ontdekking van de hemel', select id from AUTHOR where name = 'Harry Mulisch');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'De donkere kamer van Damokles', select id from AUTHOR where name = 'W.F. Hermans');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'De avonden', select id from AUTHOR where name = 'Gerard Reve');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'De engelenmaker', select id from AUTHOR where name = 'Stefan Brijs');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'Grand Hotel Europa', select id from AUTHOR where name = 'Ilja Leonard Pfeijffer');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'Lampje', select id from AUTHOR where name = 'Annet Schaap');
+insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID) values (select id from BOOK where title= 'Things Fall Apart', select id from AUTHOR where name = 'Chinua Achebe');
 
-insert into BOOK (TITLE)
-values ('1Q84');/*4*/
+insert into GENRE(NAME) values ('Fantasie');
+insert into GENRE(NAME) values ('Non-fictie');
+insert into GENRE(NAME) values ('Programmeren');
+insert into GENRE(NAME) values ('Romans');
+insert into GENRE(NAME) values ('Poëzie');
+insert into GENRE(NAME) values ('Geschiedenis');
+insert into GENRE(NAME) values ('Biografie');
+insert into GENRE(NAME) values ('Jeugdliteratuur');
+insert into GENRE(NAME) values ('Thriller');
+insert into GENRE(NAME) values ('Wetenschap');
 
-insert into BOOK (TITLE)
-values ('De opwindvogelkronieken');/*5*/
-
-insert into BOOK (TITLE)
-values ('Design Patterns');/*6*/
-
-insert into AUTHOR (NAME)
-values ('Margaret Atwood'); /*1*/
-
-insert into AUTHOR (NAME)
-values ('Haruki Murakami'); /*2*/
-
-insert into AUTHOR (NAME)
-values ('Erich Gamma'); /*3*/
-
-insert into AUTHOR (NAME)
-values ('Richard Helm'); /*4*/
-
-insert into AUTHOR (NAME)
-values ('Ralph Johnson'); /*5*/
-
-insert into AUTHOR (NAME)
-values ('John Vlissides'); /*6*/
-
-insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID)
-values (select id from BOOK where title= 'Oryx and Crake',
-           select id from AUTHOR where name = 'Margaret Atwood');
-
-insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID)
-values (select id from BOOK where title= 'The year of the flood',
-           select id from AUTHOR where name = 'Margaret Atwood');
-
-insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID)
-values (select id from BOOK where title= 'MaddAddam',
-           select id from AUTHOR where name = 'Margaret Atwood');
-
-insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID)
-values (select id from BOOK where title= '1Q84',
-           select id from AUTHOR where name = 'Haruki Murakami');
-
-insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID)
-values (select id from BOOK where title= 'De opwindvogelkronieken',
-           select id from AUTHOR where name = 'Haruki Murakami');
-
-insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID)
-values (select id from BOOK where title= 'Design Patterns',
-           select id from AUTHOR where name = 'Erich Gamma');
-
-insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID)
-values (select id from BOOK where title= 'Design Patterns',
-           select id from AUTHOR where name = 'Richard Helm');
-
-insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID)
-values (select id from BOOK where title= 'Design Patterns',
-           select id from AUTHOR where name = 'Ralph Johnson');
-
-insert into BOOK_AUTHORS (BOOKS_ID, AUTHORS_ID)
-values (select id from BOOK where title= 'Design Patterns',
-           select id from AUTHOR where name = 'John Vlissides');
-
-insert into GENRE(NAME)
-values ('fantasy');
-
-insert into GENRE(NAME)
-values ('non-fiction');
-
-insert into GENRE(NAME)
-values ('programming');
-
-INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE)
-VALUES ('admin', '$2a$10$9MIX8kYPkuB7uE/H5nHF8.KG6.YdjBA/voOnjSZnZDxLXL/2BIerS', 'ADMIN'); -- admin
-
-INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE)
-VALUES ('marie', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', 'USER'); -- password
-
-INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE)
-VALUES ('vera', '$2y$12$KF3spKP4kgf59.6zYkmjyeYaW2.4ZxV16Grpw1FPsFnzYq68kswJ6', 'USER'); -- vera
-
-
+INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE) VALUES ('admin', '$2a$10$9MIX8kYPkuB7uE/H5nHF8.KG6.YdjBA/voOnjSZnZDxLXL/2BIerS', 'ADMIN');
+INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE) VALUES ('marie', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', 'USER');
+INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE) VALUES ('vera', '$2y$12$KF3spKP4kgf59.6zYkmjyeYaW2.4ZxV16Grpw1FPsFnzYq68kswJ6', 'USER');
+INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE) VALUES ('thomas', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', 'USER');
+INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE) VALUES ('anke', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', 'USER');
+INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE) VALUES ('filip', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', 'USER');
+INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE) VALUES ('liesbeth', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', 'USER');
+INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE) VALUES ('stefan', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', 'USER');
+INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE) VALUES ('jan', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', 'USER');
+INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE) VALUES ('niels', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', 'USER');
