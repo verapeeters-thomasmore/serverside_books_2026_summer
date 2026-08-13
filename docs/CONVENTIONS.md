@@ -9,10 +9,9 @@ je dat doet.
 *	Formatteer je code (ctrl-alt-l in IntelliJ, shift-alt-f in VsCode) 
 
 ## 2. Specifiek voor het vak ServerSide: 
-*	Gebruik h2-mem om te developen (profile dev), gebruik h2-file om db-update te verifieren ((profile h2file)
-* 	Geen service layer (buiten scope voor deze cursus). Uitzondering: BU-logic die in 
-verschillende Controllers gebruikt worden. Maar je kan hiervoor ook een simpele 
-utility-class maken 
+*	Gebruik h2-mem om te developen (profile dev)
+*	Gebruik h2-file om db-update te verifieren (profile h2file)
+
 
 ## 3. Naming conventions 
 ### Algemeen
