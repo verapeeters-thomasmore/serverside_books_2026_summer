@@ -156,13 +156,33 @@ insert into GENRE(NAME) values ('Jeugdliteratuur');
 insert into GENRE(NAME) values ('Thriller');
 insert into GENRE(NAME) values ('Wetenschap');
 
-INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE) VALUES ('admin', '$2a$10$9MIX8kYPkuB7uE/H5nHF8.KG6.YdjBA/voOnjSZnZDxLXL/2BIerS', 'ADMIN');
-INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE) VALUES ('marie', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', 'USER');
-INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE) VALUES ('vera', '$2y$12$KF3spKP4kgf59.6zYkmjyeYaW2.4ZxV16Grpw1FPsFnzYq68kswJ6', 'USER');
-INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE) VALUES ('thomas', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', 'USER');
-INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE) VALUES ('anke', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', 'USER');
-INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE) VALUES ('filip', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', 'USER');
-INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE) VALUES ('liesbeth', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', 'USER');
-INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE) VALUES ('stefan', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', 'USER');
-INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE) VALUES ('jan', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', 'USER');
-INSERT INTO BOOKSUSER (USERNAME, PASSWORD, ROLE) VALUES ('niels', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', 'USER');
+INSERT INTO users (username, password, enabled) VALUES ('admin', '$2a$10$9MIX8kYPkuB7uE/H5nHF8.KG6.YdjBA/voOnjSZnZDxLXL/2BIerS', true);
+INSERT INTO authorities (username, authority) VALUES ('admin', 'ADMIN');
+
+INSERT INTO users (username, password, enabled) VALUES ('marie', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', true);
+INSERT INTO authorities (username, authority) VALUES ('marie', 'USER');
+
+INSERT INTO users (username, password, enabled) VALUES ('vera', '$2y$12$KF3spKP4kgf59.6zYkmjyeYaW2.4ZxV16Grpw1FPsFnzYq68kswJ6', true);
+INSERT INTO authorities (username, authority) VALUES ('vera', 'USER');
+
+INSERT INTO users (username, password, enabled) VALUES ('thomas', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', true);
+INSERT INTO authorities (username, authority) VALUES ('thomas', 'USER');
+
+INSERT INTO users (username, password, enabled) VALUES ('anke', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', true);
+INSERT INTO authorities (username, authority) VALUES ('anke', 'USER');
+
+INSERT INTO users (username, password, enabled) VALUES ('filip', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', true);
+INSERT INTO authorities (username, authority) VALUES ('filip', 'USER');
+
+INSERT INTO users (username, password, enabled) VALUES ('liesbeth', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', true);
+INSERT INTO authorities (username, authority) VALUES ('liesbeth', 'USER');
+
+INSERT INTO users (username, password, enabled) VALUES ('stefan', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', true);
+INSERT INTO authorities (username, authority) VALUES ('stefan', 'USER');
+
+INSERT INTO users (username, password, enabled) VALUES ('jan', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', true);
+INSERT INTO authorities (username, authority) VALUES ('jan', 'USER');
+
+INSERT INTO users (username, password, enabled) VALUES ('niels', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', true);
+INSERT INTO authorities (username, authority) VALUES ('niels', 'USER');
+

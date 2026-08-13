@@ -87,9 +87,9 @@ public class SecurityConfiguration {
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
                 .usersByUsernameQuery(
-                        "select username, password, true from booksuser where username = ?")
+                        "select username, password, enabled from users where username = ?")
                 .authoritiesByUsernameQuery(
-                        "select username, role from booksuser where username = ?");
+                        "select username, authority from authorities where username = ?");
     }
 
     @Bean

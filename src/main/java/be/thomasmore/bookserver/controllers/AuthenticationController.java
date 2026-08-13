@@ -1,11 +1,10 @@
 package be.thomasmore.bookserver.controllers;
 
-import be.thomasmore.bookserver.model.User;
 import be.thomasmore.bookserver.model.dto.AuthenticationDTO;
 import be.thomasmore.bookserver.model.dto.UserDTO;
-import be.thomasmore.bookserver.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,14 +26,14 @@ import java.security.Principal;
 @Slf4j
 public class AuthenticationController {
 
-    private final UserRepository userRepository;
+    private final JdbcTemplate jdbcTemplate;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationController(UserRepository userRepository,
+    public AuthenticationController(JdbcTemplate jdbcTemplate,
                                     PasswordEncoder passwordEncoder,
                                     AuthenticationManager authenticationManager) {
-        this.userRepository = userRepository;
+        this.jdbcTemplate = jdbcTemplate;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
     }
@@ -50,20 +49,21 @@ public class AuthenticationController {
     public AuthenticationDTO signup(@RequestBody UserDTO userDTO) {
         log.info("##### signup {}", userDTO.username());
 
-        if (userRepository.findByUsername(userDTO.username()).isPresent()) {
+        Integer count = jdbcTemplate.queryForObject(
+                "select count(*) from users where username = ?", Integer.class, userDTO.username());
+        if (count != null && count > 0) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                     "User with name %s already exists.".formatted(userDTO.username()));
         }
 
-        User newUser = new User();
-        newUser.setUsername(userDTO.username());
-        newUser.setRole("USER");
-        newUser.setPassword(passwordEncoder.encode(userDTO.password()));
-        User savedUser = userRepository.save(newUser);
+        jdbcTemplate.update("insert into users (username, password, enabled) values (?, ?, ?)",
+                userDTO.username(), passwordEncoder.encode(userDTO.password()), true);
+        jdbcTemplate.update("insert into authorities (username, authority) values (?, ?)",
+                userDTO.username(), "USER");
 
         autologin(userDTO.username(), userDTO.password());
 
-        return new AuthenticationDTO(savedUser.getUsername());
+        return new AuthenticationDTO(userDTO.username());
     }
 
     private void autologin(String userName, String password) {
