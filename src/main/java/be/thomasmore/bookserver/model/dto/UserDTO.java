@@ -6,6 +6,7 @@ package be.thomasmore.bookserver.model.dto;
  */
 public record UserDTO(
         String username,
-        String password
+        String password,
+        String email
 ) {
 }

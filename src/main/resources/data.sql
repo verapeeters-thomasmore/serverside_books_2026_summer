@@ -186,3 +186,15 @@ INSERT INTO authorities (username, authority) VALUES ('jan', 'USER');
 INSERT INTO users (username, password, enabled) VALUES ('niels', '$2a$10$9TeBFudS7HsgCa4sSvP//O627sMq.KiTFrOr8IzrVlYw5c8aoKzNm', true);
 INSERT INTO authorities (username, authority) VALUES ('niels', 'USER');
 
+INSERT INTO member (username, email) VALUES ('admin', 'admin@thomasmore.be');
+INSERT INTO member (username, email) VALUES ('marie', 'marie@thomasmore.be');
+INSERT INTO member (username, email) VALUES ('vera', 'vera@thomasmore.be');
+INSERT INTO member (username, email) VALUES ('thomas', 'thomas@thomasmore.be');
+INSERT INTO member (username, email) VALUES ('anke', 'anke@thomasmore.be');
+INSERT INTO member (username, email) VALUES ('filip', 'filip@thomasmore.be');
+INSERT INTO member (username, email) VALUES ('liesbeth', 'liesbeth@thomasmore.be');
+INSERT INTO member (username, email) VALUES ('stefan', 'stefan@thomasmore.be');
+INSERT INTO member (username, email) VALUES ('jan', 'jan@thomasmore.be');
+INSERT INTO member (username, email) VALUES ('niels', 'niels@thomasmore.be');
+
+

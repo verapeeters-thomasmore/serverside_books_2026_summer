@@ -1,7 +1,10 @@
 package be.thomasmore.bookserver.controllers;
 
+import be.thomasmore.bookserver.model.Member;
+import be.thomasmore.bookserver.model.converters.MemberDTOConverter;
 import be.thomasmore.bookserver.model.dto.AuthenticationDTO;
 import be.thomasmore.bookserver.model.dto.UserDTO;
+import be.thomasmore.bookserver.repositories.MemberRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -26,11 +29,17 @@ public class AuthenticationController {
 
     private final JdbcUserDetailsManager jdbcUserDetailsManager;
     private final PasswordEncoder passwordEncoder;
+    private final MemberRepository memberRepository;
+    private final MemberDTOConverter memberDTOConverter;
 
     public AuthenticationController(JdbcUserDetailsManager jdbcUserDetailsManager,
-                                    PasswordEncoder passwordEncoder) {
+                                    PasswordEncoder passwordEncoder,
+                                    MemberRepository memberRepository,
+                                    MemberDTOConverter memberDTOConverter) {
         this.jdbcUserDetailsManager = jdbcUserDetailsManager;
         this.passwordEncoder = passwordEncoder;
+        this.memberRepository = memberRepository;
+        this.memberDTOConverter = memberDTOConverter;
     }
 
     @GetMapping("/authenticate")
@@ -54,6 +63,9 @@ public class AuthenticationController {
                 .authorities("USER")
                 .build();
         jdbcUserDetailsManager.createUser(user);
+
+        Member member = memberDTOConverter.convertToEntity(userDTO);
+        memberRepository.save(member);
 
         request.login(userDTO.username(), userDTO.password());
 
