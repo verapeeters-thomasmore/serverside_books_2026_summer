@@ -73,7 +73,7 @@ Coding Conventions
 * Use String templates (JDK 21+ preview, JDK 25 stable)
 * Apply sequenced collections (JDK 21+)
 * Use Stream.toList() instead of Collectors.toList()
-* Apply constructor injection instead of field injection
+* Apply constructor injection instead of field injection (@Autowired on fields is allowed in test classes)
 
 ## 5 Spring Boot
 
