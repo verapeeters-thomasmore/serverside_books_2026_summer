@@ -113,9 +113,15 @@ final class CsrfCookieFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        CsrfToken csrfToken = (CsrfToken) request.getAttribute("_csrf");
+        CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
         if (csrfToken != null) {
-            csrfToken.getToken(); // Force token generation and cookie creation
+            String token = csrfToken.getToken(); // Force token generation and resolution
+            
+            // Always set the cookie in the response to ensure the client receives it
+            jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("XSRF-TOKEN", token);
+            cookie.setPath("/");
+            cookie.setHttpOnly(false); // Make accessible to JS
+            response.addCookie(cookie);
         }
         filterChain.doFilter(request, response);
     }

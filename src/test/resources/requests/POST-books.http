@@ -1,0 +1,44 @@
+### POST books
+
+### NOOT!!!: de JS code werkt niet met IntelliJ 25.x.x - dus installeer IntelliJ 26.x.x
+
+### stap 1: authenticate en haal CSRF token op
+### deze stap heb je nodig als je ge-authoriseerde requests wil doen die een csrf-token nodig hebben
+
+GET http://localhost:8080/api/authenticate
+Authorization: Basic vera vera
+
+> {%
+    // Retrieve the CSRF token from the cookie set by Spring Security (usually named XSRF-TOKEN)
+    const csrfCookies = response.cookiesByName("XSRF-TOKEN");
+    // In some situations Spring Security sends an empty cookie first to clear old data, followed by the valid one.
+    // we want to filter out the empty one:
+    const validCookie = csrfCookies.find(c => c.value && c.value.length > 0);
+    if (validCookie) {
+        client.global.set("csrf_token", validCookie.value);
+        client.log("Successfully stored CSRF token: " + validCookie.value);
+    } else {
+        // Fallback: if no new cookie header was sent this time,
+        // use the env var that is already set. If no env var is set, so be it...
+        client.log("No new Set-Cookie header in this response, using existing state.");
+    }
+    client.log("Stored token: " + client.global.get("csrf_token"));
+%}
+
+### stap 2: POST request met Basic Auth en het opgeslagen CSRF-token
+### random.uuid to make title unique
+
+POST http://localhost:8080/api/books
+Content-Type: application/json
+X-XSRF-TOKEN: {{csrf_token}}
+Authorization: Basic vera vera
+
+{
+  "title": "NIEUW {{$random.uuid}}"
+}
+
+
+> {%
+    //for debugging purposes: show stored token used in this request
+    client.log("Stored token: " + client.global.get("csrf_token"));
+%}
