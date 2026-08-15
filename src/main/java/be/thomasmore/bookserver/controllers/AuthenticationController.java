@@ -2,16 +2,14 @@ package be.thomasmore.bookserver.controllers;
 
 import be.thomasmore.bookserver.model.dto.AuthenticationDTO;
 import be.thomasmore.bookserver.model.dto.UserDTO;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -26,16 +24,13 @@ import java.security.Principal;
 @Slf4j
 public class AuthenticationController {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final JdbcUserDetailsManager jdbcUserDetailsManager;
     private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
 
-    public AuthenticationController(JdbcTemplate jdbcTemplate,
-                                    PasswordEncoder passwordEncoder,
-                                    AuthenticationManager authenticationManager) {
-        this.jdbcTemplate = jdbcTemplate;
+    public AuthenticationController(JdbcUserDetailsManager jdbcUserDetailsManager,
+                                    PasswordEncoder passwordEncoder) {
+        this.jdbcUserDetailsManager = jdbcUserDetailsManager;
         this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
     }
 
     @GetMapping("/authenticate")
@@ -46,37 +41,22 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public AuthenticationDTO signup(@RequestBody UserDTO userDTO) {
+    public AuthenticationDTO signup(@RequestBody UserDTO userDTO, HttpServletRequest request) throws ServletException {
         log.info("##### signup {}", userDTO.username());
 
-        Integer count = jdbcTemplate.queryForObject(
-                "select count(*) from users where username = ?", Integer.class, userDTO.username());
-        if (count != null && count > 0) {
+        if (jdbcUserDetailsManager.userExists(userDTO.username())) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                     "User with name %s already exists.".formatted(userDTO.username()));
         }
 
-        jdbcTemplate.update("insert into users (username, password, enabled) values (?, ?, ?)",
-                userDTO.username(), passwordEncoder.encode(userDTO.password()), true);
-        jdbcTemplate.update("insert into authorities (username, authority) values (?, ?)",
-                userDTO.username(), "USER");
+        UserDetails user = User.withUsername(userDTO.username())
+                .password(passwordEncoder.encode(userDTO.password()))
+                .authorities("USER")
+                .build();
+        jdbcUserDetailsManager.createUser(user);
 
-        autologin(userDTO.username(), userDTO.password());
+        request.login(userDTO.username(), userDTO.password());
 
         return new AuthenticationDTO(userDTO.username());
-    }
-
-    private void autologin(String userName, String password) {
-        var token = new UsernamePasswordAuthenticationToken(userName, password);
-
-        try {
-            Authentication auth = authenticationManager.authenticate(token);
-            log.info("authentication: {}", auth.isAuthenticated());
-
-            SecurityContext sc = SecurityContextHolder.getContext();
-            sc.setAuthentication(auth);
-        } catch (AuthenticationException e) {
-            log.error("Auto-login failed for user: {}", userName, e);
-        }
     }
 }
