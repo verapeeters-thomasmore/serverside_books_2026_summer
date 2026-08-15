@@ -18,6 +18,7 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -79,20 +80,15 @@ public class SecurityConfiguration {
                 .build();
     }
 
-    /**
-     * Configure JDBC authentication with custom queries.
-     */
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
-                .dataSource(dataSource)
-                .usersByUsernameQuery(
-                        "select username, password, enabled from users where username = ?")
-                .authoritiesByUsernameQuery(
-                        "select username, authority from authorities where username = ?");
+
+    @Bean
+    // means that we use standard tables in the db to define users and roles
+    public JdbcUserDetailsManager jdbcUserDetailsManager() {
+        return new JdbcUserDetailsManager(dataSource);
     }
 
     @Bean
+    // NEVER store readable passwords in the database!
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
