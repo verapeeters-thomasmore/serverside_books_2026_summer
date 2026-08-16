@@ -11,8 +11,7 @@ public record BookDetailedDTO(
         int id,
         String title,
         String description,
-        List<AuthorDTO> authors,
-        List<BookDTO> booksSameAuthor
+        List<AuthorDTO> authors
 ) {
     /**
      * Compact constructor for validation/normalization.
@@ -20,6 +19,5 @@ public record BookDetailedDTO(
     public BookDetailedDTO {
         // Ensure lists are never null for consistent API responses
         authors = authors == null ? List.of() : authors;
-        booksSameAuthor = booksSameAuthor == null ? List.of() : booksSameAuthor;
     }
 }

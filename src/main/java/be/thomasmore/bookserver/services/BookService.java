@@ -79,8 +79,7 @@ public class BookService {
                 bookDto.id(),
                 bookDto.title(),
                 bookDto.description(),
-                null,  // Don't set authors during create
-                null
+                null  // Don't set authors during create
         );
 
         final Book entityToSave = bookDetailedDTOConverter.convertToEntity(dtoForConversion);

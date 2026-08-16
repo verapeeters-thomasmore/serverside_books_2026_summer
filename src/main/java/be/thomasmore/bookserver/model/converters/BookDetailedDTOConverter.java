@@ -32,18 +32,6 @@ public class BookDetailedDTOConverter {
      * @return BookDetailedDTO record (booksSameAuthor will be empty)
      */
     public BookDetailedDTO convertToDto(Book book) {
-        return convertToDto(book, List.of());
-    }
-
-    /**
-     * Convert entity to complete DTO with booksSameAuthor.
-     * Modern approach: all data gathered before DTO creation.
-     *
-     * @param book            the entity from the db
-     * @param booksSameAuthor pre-computed list of books by same authors
-     * @return complete BookDetailedDTO record
-     */
-    public BookDetailedDTO convertToDto(Book book, List<BookDTO> booksSameAuthor) {
         List<AuthorDTO> authorDtos = book.getAuthors() == null
                 ? List.of()
                 : book.getAuthors().stream()
@@ -54,8 +42,7 @@ public class BookDetailedDTOConverter {
                 book.getId(),
                 book.getTitle(),
                 null, // description not in this simpler entity
-                authorDtos,
-                booksSameAuthor
+                authorDtos
         );
     }
 

@@ -37,11 +37,10 @@ public class BookControllerCreateWithAuthorsTest extends AbstractIntegrationTest
     @Transactional
     public void createBookWithAuthorIdShouldNotSetTheRelation() throws Exception {
         final String BOOK_TITLE = "Create a book with an author id";
-        // Using record constructor
         AuthorDTO authorDto = new AuthorDTO(1, null); // author 1 exists
-        // Using record constructor - 5 fields: id, title, description, authors, booksSameAuthor
+        // Using record constructor - 4 fields: id, title, description, authors
         BookDetailedDTO newBookDto = new BookDetailedDTO(
-                0, BOOK_TITLE, null, List.of(authorDto), null);
+                0, BOOK_TITLE, null, List.of(authorDto));
 
         mockMvc.perform(getMockRequestPost("/api/books", newBookDto))
                 .andExpect(status().isOk())
@@ -61,10 +60,10 @@ public class BookControllerCreateWithAuthorsTest extends AbstractIntegrationTest
     public void createBookWithFilledAuthorDTOShouldNotSetTheRelation() throws Exception {
         final String BOOK_TITLE = "Create a book with a filled author object";
         final String AUTHOR_NAME = "Adrian Vandenhoof";
-        // Using record constructor
         AuthorDTO authorDTO = new AuthorDTO(1, AUTHOR_NAME);
+        // Using record constructor - 4 fields: id, title, description, authors
         BookDetailedDTO newBookDto = new BookDetailedDTO(
-                0, BOOK_TITLE, null, List.of(authorDTO), null);
+                0, BOOK_TITLE, null, List.of(authorDTO));
 
         mockMvc.perform(getMockRequestPost("/api/books", newBookDto))
                 .andExpect(status().isOk())
