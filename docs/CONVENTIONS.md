@@ -28,7 +28,8 @@ Coding Conventions
 * Java is case-sensitive
 * Variabelen kleine letter, camelCase
 * Functions kleine letter, camelCase
-* Packages, kleine letters
+* Packages, kleine letters 
+* Test packages voor controllers worden in meervoud benoemd, analoog aan de endpoints en requests die ze testen, bijv. `books` i.p.v. `book`
 * Classes hoofdletters, CamelCase
 
 ### SQL
