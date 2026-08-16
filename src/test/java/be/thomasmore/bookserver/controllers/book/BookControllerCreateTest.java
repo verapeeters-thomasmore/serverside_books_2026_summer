@@ -30,8 +30,11 @@ public class BookControllerCreateTest extends AbstractIntegrationTest {
         final String BOOK_TITLE = "It is simple to create a book";
         final String BOOK_DESCRIPTION = "simple description";
         // Using record constructor - 4 fields: id, title, description, authors
-        BookDetailedDTO newBookDto = new BookDetailedDTO(
-                0, BOOK_TITLE, BOOK_DESCRIPTION, null);
+        BookDetailedDTO newBookDto = BookDetailedDTO.builder()
+                .id(0)
+                .title(BOOK_TITLE)
+                .description(BOOK_DESCRIPTION)
+                .build();
 
         mockMvc.perform(getMockRequestPost("/api/books", newBookDto))
                 .andExpect(status().isOk())
@@ -47,8 +50,10 @@ public class BookControllerCreateTest extends AbstractIntegrationTest {
     @ExceptionHandler
     @WithMockUser
     public void createBook_titleCannotBeEmpty() {
-        BookDetailedDTO newBookDto = new BookDetailedDTO(
-                0, null, null, null);
+        BookDetailedDTO newBookDto = BookDetailedDTO.builder()
+                .id(0)
+                .title(null)
+                .build();
 
         assertThatThrownBy(() -> mockMvc.perform(getMockRequestPost("/api/books", newBookDto)));
         assertThat(bookRepository.count()).isEqualTo(0);
@@ -58,8 +63,10 @@ public class BookControllerCreateTest extends AbstractIntegrationTest {
     @ExceptionHandler
     @WithMockUser
     public void createBook_titleCannotBeBlank() {
-        BookDetailedDTO newBookDto = new BookDetailedDTO(
-                0, "", null, null);
+        BookDetailedDTO newBookDto = BookDetailedDTO.builder()
+                .id(0)
+                .title("")
+                .build();
 
         assertThatThrownBy(() -> mockMvc.perform(getMockRequestPost("/api/books", newBookDto)));
         assertThat(bookRepository.count()).isEqualTo(0);
@@ -69,8 +76,10 @@ public class BookControllerCreateTest extends AbstractIntegrationTest {
     @ExceptionHandler
     @WithMockUser
     public void createBook_titleHasToBeUnique() throws Exception {
-        BookDetailedDTO newBookDto = new BookDetailedDTO(
-                0, "Recreate an existing book", null, null);
+        BookDetailedDTO newBookDto = BookDetailedDTO.builder()
+                .id(0)
+                .title("Recreate an existing book")
+                .build();
         MockHttpServletRequestBuilder mockRequest = getMockRequestPost("/api/books", newBookDto);
 
         //first time is ok
@@ -88,8 +97,10 @@ public class BookControllerCreateTest extends AbstractIntegrationTest {
     @WithMockUser
     public void createBook_givenIdIsNotTakenIntoAccount() throws Exception {
         final String BOOK_TITLE = "Book with random given id";
-        BookDetailedDTO newBookDto = new BookDetailedDTO(
-                57, BOOK_TITLE, null, null);
+        BookDetailedDTO newBookDto = BookDetailedDTO.builder()
+                .id(57)
+                .title(BOOK_TITLE)
+                .build();
 
         mockMvc.perform(getMockRequestPost("/api/books", newBookDto))
                 .andExpect(status().isOk())

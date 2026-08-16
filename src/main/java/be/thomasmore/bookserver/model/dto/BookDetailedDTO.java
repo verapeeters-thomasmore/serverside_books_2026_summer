@@ -1,5 +1,6 @@
 package be.thomasmore.bookserver.model.dto;
 
+import lombok.Builder;
 import java.util.List;
 
 /**
@@ -7,10 +8,13 @@ import java.util.List;
  * Immutable data carrier - all fields set at construction.
  * booksSameAuthor is computed and passed at construction time.
  */
+@Builder
 public record BookDetailedDTO(
         int id,
         String title,
         String description,
+        Integer publicationYear,
+        String language,
         List<AuthorDTO> authors
 ) {
     /**

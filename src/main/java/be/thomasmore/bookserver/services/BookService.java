@@ -75,12 +75,14 @@ public class BookService {
         }
 
         // Create DTO without authors for entity conversion
-        BookDetailedDTO dtoForConversion = new BookDetailedDTO(
-                bookDto.id(),
-                bookDto.title(),
-                bookDto.description(),
-                null  // Don't set authors during create
-        );
+        BookDetailedDTO dtoForConversion = BookDetailedDTO.builder()
+                .id(bookDto.id())
+                .title(bookDto.title())
+                .description(bookDto.description())
+                .publicationYear(bookDto.publicationYear())
+                .language(bookDto.language())
+                .authors(null)
+                .build();
 
         final Book entityToSave = bookDetailedDTOConverter.convertToEntity(dtoForConversion);
         entityToSave.setId(0); // Ensure Hibernate treats this as a new entity

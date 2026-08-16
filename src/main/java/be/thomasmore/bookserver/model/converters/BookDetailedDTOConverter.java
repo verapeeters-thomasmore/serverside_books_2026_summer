@@ -38,12 +38,14 @@ public class BookDetailedDTOConverter {
                 .map(authorDTOConverter::convertToDto)
                 .toList();
 
-        return new BookDetailedDTO(
-                book.getId(),
-                book.getTitle(),
-                null, // description not in this simpler entity
-                authorDtos
-        );
+        return BookDetailedDTO.builder()
+                .id(book.getId())
+                .title(book.getTitle())
+                .description(book.getDescription())
+                .publicationYear(book.getPublicationYear())
+                .language(book.getLanguage())
+                .authors(authorDtos)
+                .build();
     }
 
     /**
@@ -56,6 +58,9 @@ public class BookDetailedDTOConverter {
         Book book = new Book();
         book.setId(bookDto.id());
         book.setTitle(bookDto.title());
+        book.setDescription(bookDto.description());
+        book.setPublicationYear(bookDto.publicationYear());
+        book.setLanguage(bookDto.language());
 
         // Handle author references (only IDs matter for relationship)
         if (bookDto.authors() != null && !bookDto.authors().isEmpty()) {
@@ -78,6 +83,9 @@ public class BookDetailedDTOConverter {
      */
     public Book convertToEntity(BookDetailedDTO bookDto, Book book) {
         book.setTitle(bookDto.title());
+        book.setDescription(bookDto.description());
+        book.setPublicationYear(bookDto.publicationYear());
+        book.setLanguage(bookDto.language());
         // Don't touch authors - use PUT /api/books/{id}/authors
         return book;
     }

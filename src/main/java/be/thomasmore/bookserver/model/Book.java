@@ -32,6 +32,15 @@ public class Book {
     //todo: clean up (with flyway)
     private String author = ""; //this is not normalized but I don't care for this example
 
+    @Min(value = 1000, message = "publicationYear should not be older than 1000")
+    @Max(value = 2100, message = "publicationYear should not be in the far future")
+    private Integer publicationYear;
+
+    @Column(length = 1000)
+    private String description;
+
+    private String language;
+
 
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Author> authors;

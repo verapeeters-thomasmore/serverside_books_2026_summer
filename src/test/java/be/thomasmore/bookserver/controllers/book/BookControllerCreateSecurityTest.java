@@ -25,8 +25,10 @@ public class BookControllerCreateSecurityTest extends AbstractIntegrationTest {
     public void createBook_notPossibleIfNotAuthenticated() throws Exception {
         final String BOOK_TITLE = "Create a Book when you are not authenticated";
         // Using record constructor - 4 fields: id, title, description, authors
-        BookDetailedDTO newBookDto = new BookDetailedDTO(
-                0, BOOK_TITLE, null, null);
+        BookDetailedDTO newBookDto = BookDetailedDTO.builder()
+                .id(0)
+                .title(BOOK_TITLE)
+                .build();
 
         mockMvc.perform(getMockRequestPost("/api/books/", newBookDto))
                 .andExpect(status().isUnauthorized());
@@ -38,8 +40,10 @@ public class BookControllerCreateSecurityTest extends AbstractIntegrationTest {
     @WithMockUser
     public void createBook_notPossibleIfNoCsrfToken() throws Exception {
         final String BOOK_TITLE = "Create a Book without csrf token";
-        BookDetailedDTO newBookDto = new BookDetailedDTO(
-                0, BOOK_TITLE, null, null);
+        BookDetailedDTO newBookDto = BookDetailedDTO.builder()
+                .id(0)
+                .title(BOOK_TITLE)
+                .build();
 
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
                 .post("/api/books/")
