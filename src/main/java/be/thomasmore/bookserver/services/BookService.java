@@ -87,7 +87,7 @@ public class BookService {
 
     public BookDetailedDTO edit(int id, BookDetailedDTO bookDto) {
         if (bookDto.id() != id) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "id in book (%d) does not match id in url (%d).".formatted(bookDto.id(), id));
         }
 
