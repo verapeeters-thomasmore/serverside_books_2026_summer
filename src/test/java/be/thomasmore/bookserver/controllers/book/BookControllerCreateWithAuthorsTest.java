@@ -43,7 +43,7 @@ public class BookControllerCreateWithAuthorsTest extends AbstractIntegrationTest
         BookDetailedDTO newBookDto = new BookDetailedDTO(
                 0, BOOK_TITLE, null, List.of(authorDto), null);
 
-        mockMvc.perform(getMockRequestPost("/api/books/", newBookDto))
+        mockMvc.perform(getMockRequestPost("/api/books", newBookDto))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.authors").isEmpty());
 
@@ -66,7 +66,7 @@ public class BookControllerCreateWithAuthorsTest extends AbstractIntegrationTest
         BookDetailedDTO newBookDto = new BookDetailedDTO(
                 0, BOOK_TITLE, null, List.of(authorDTO), null);
 
-        mockMvc.perform(getMockRequestPost("/api/books/", newBookDto))
+        mockMvc.perform(getMockRequestPost("/api/books", newBookDto))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.authors").isEmpty());
 

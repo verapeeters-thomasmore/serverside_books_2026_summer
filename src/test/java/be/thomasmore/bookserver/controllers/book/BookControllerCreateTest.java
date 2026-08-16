@@ -33,7 +33,7 @@ public class BookControllerCreateTest extends AbstractIntegrationTest {
         BookDetailedDTO newBookDto = new BookDetailedDTO(
                 0, BOOK_TITLE, BOOK_DESCRIPTION, null, null);
 
-        mockMvc.perform(getMockRequestPost("/api/books/", newBookDto))
+        mockMvc.perform(getMockRequestPost("/api/books", newBookDto))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.title").value(BOOK_TITLE))
@@ -50,7 +50,7 @@ public class BookControllerCreateTest extends AbstractIntegrationTest {
         BookDetailedDTO newBookDto = new BookDetailedDTO(
                 0, null, null, null, null);
 
-        assertThatThrownBy(() -> mockMvc.perform(getMockRequestPost("/api/books/", newBookDto)));
+        assertThatThrownBy(() -> mockMvc.perform(getMockRequestPost("/api/books", newBookDto)));
         assertThat(bookRepository.count()).isEqualTo(0);
     }
 
@@ -61,7 +61,7 @@ public class BookControllerCreateTest extends AbstractIntegrationTest {
         BookDetailedDTO newBookDto = new BookDetailedDTO(
                 0, "", null, null, null);
 
-        assertThatThrownBy(() -> mockMvc.perform(getMockRequestPost("/api/books/", newBookDto)));
+        assertThatThrownBy(() -> mockMvc.perform(getMockRequestPost("/api/books", newBookDto)));
         assertThat(bookRepository.count()).isEqualTo(0);
     }
 
@@ -71,7 +71,7 @@ public class BookControllerCreateTest extends AbstractIntegrationTest {
     public void createBook_titleHasToBeUnique() throws Exception {
         BookDetailedDTO newBookDto = new BookDetailedDTO(
                 0, "Recreate an existing book", null, null, null);
-        MockHttpServletRequestBuilder mockRequest = getMockRequestPost("/api/books/", newBookDto);
+        MockHttpServletRequestBuilder mockRequest = getMockRequestPost("/api/books", newBookDto);
 
         //first time is ok
         mockMvc.perform(mockRequest).andExpect(status().isOk());
@@ -91,7 +91,7 @@ public class BookControllerCreateTest extends AbstractIntegrationTest {
         BookDetailedDTO newBookDto = new BookDetailedDTO(
                 57, BOOK_TITLE, null, null, null);
 
-        mockMvc.perform(getMockRequestPost("/api/books/", newBookDto))
+        mockMvc.perform(getMockRequestPost("/api/books", newBookDto))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1)) // not 57!
                 .andExpect(jsonPath("$.title").value(BOOK_TITLE))
@@ -108,7 +108,7 @@ public class BookControllerCreateTest extends AbstractIntegrationTest {
     public void createBook_titleHasToBeUniqueCaseInsensitive() throws Exception {
         BookDetailedDTO newBookDto = new BookDetailedDTO(
                 0, "RECREATE AN EXISTING BOOK", null, null, null);
-        MockHttpServletRequestBuilder mockRequest = getMockRequestPost("/api/books/", newBookDto);
+        MockHttpServletRequestBuilder mockRequest = getMockRequestPost("/api/books", newBookDto);
 
         //first time is ok
         mockMvc.perform(mockRequest).andExpect(status().isOk());
