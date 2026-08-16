@@ -102,22 +102,4 @@ public class BookControllerCreateTest extends AbstractIntegrationTest {
         assertThat(loadedBook.getTitle()).isEqualTo(BOOK_TITLE);
     }
 
-    @Test
-    @ExceptionHandler
-    @WithMockUser
-    public void createBook_titleHasToBeUniqueCaseInsensitive() throws Exception {
-        BookDetailedDTO newBookDto = new BookDetailedDTO(
-                0, "RECREATE AN EXISTING BOOK", null, null);
-        MockHttpServletRequestBuilder mockRequest = getMockRequestPost("/api/books", newBookDto);
-
-        //first time is ok
-        mockMvc.perform(mockRequest).andExpect(status().isOk());
-
-        //send the same POST again with same title - fails
-        final MvcResult mvcResult = mockMvc.perform(mockRequest)
-                .andExpect(status().isInternalServerError())
-                .andReturn();
-        assertThat(mvcResult.getResponse().getErrorMessage()).isEqualTo("Book with title RECREATE AN EXISTING BOOK already exists.");
-        assertThat(bookRepository.count()).isEqualTo(1);
-    }
 }

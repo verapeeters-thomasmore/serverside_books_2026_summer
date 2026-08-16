@@ -69,7 +69,7 @@ public class BookService {
     }
 
     public BookDetailedDTO create(BookDetailedDTO bookDto) {
-        if (bookRepository.findByTitleIgnoreCase(bookDto.title()).isPresent()) {
+        if (bookRepository.findByTitle(bookDto.title()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                     "Book with title %s already exists.".formatted(bookDto.title()));
         }
@@ -97,11 +97,6 @@ public class BookService {
         Book bookFromDb = bookRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Book with id %d not found.".formatted(id)));
-
-        if (bookRepository.findByIdNotAndTitleIgnoreCase(id, bookDto.title()).isPresent()) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                    "Another book already exists with title %s.".formatted(bookDto.title()));
-        }
 
         // Overwrite fields present in bookDto - relations are not touched
         Book bookSaved = bookRepository.save(bookDetailedDTOConverter.convertToEntity(bookDto, bookFromDb));

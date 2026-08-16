@@ -50,7 +50,8 @@ public class BookController {
     }
 
     @Operation(summary = "create a new book in the database.",
-            description = "The authors are <b>not</b> updated in the new book.</br>" +
+            description = "The title of the book must be unique.</br>" +
+                    "The authors are <b>not</b> updated in the new book.</br>" +
                     "Use PUT api/books/{id}/authors to update those. </br>" +
                     "</br>" +
                     "Returns new book (containing id from database). ")

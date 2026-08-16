@@ -14,22 +14,9 @@ public interface BookRepository extends CrudRepository<Book, Integer> {
 
     Optional<Book> findByTitle(String title);
 
-    Optional<Book> findByTitleIgnoreCase(String title);
-
-    Optional<Book> findByIdNotAndTitleIgnoreCase(int id, String title);
-
     @NonNull
     List<Book> findAll();
 
     List<Book> findByTitleContainingIgnoreCase(String titleKeyWord);
 
-
-    //this works with the flat authors Collection (in current version of spring)
-    // so I will not add the extra complexity of defining a Collection<Collection<Authors>>
-    // List<Book> findDistinctByAuthorsIn(Collection<Author> authors);
-
-    //this works with the flat authors Collection (in current version of spring)
-    // so I will not add the extra complexity of defining a Collection<Collection<Authors>>
-    @SuppressWarnings("SpringDataRepositoryMethodParametersInspection")
-    List<Book> findDistinctByAuthorsInAndIdNot(Collection<Author> authors, int bookId);
 }
