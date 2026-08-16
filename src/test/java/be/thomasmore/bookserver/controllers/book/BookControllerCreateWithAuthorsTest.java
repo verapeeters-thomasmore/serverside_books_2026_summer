@@ -53,7 +53,7 @@ public class BookControllerCreateWithAuthorsTest extends AbstractIntegrationTest
         assertThat(loadedBook.getTitle()).isEqualTo(BOOK_TITLE);
 
         //book does not have authors in db:
-        assertThat(loadedBook.getAuthors()).isNull();
+        assertThat(loadedBook.getAuthors()).isNullOrEmpty();
     }
 
     @Test
@@ -78,7 +78,7 @@ public class BookControllerCreateWithAuthorsTest extends AbstractIntegrationTest
         assertThat(loadedBook.getTitle()).isEqualTo(BOOK_TITLE);
 
         //book does not have authors in db:
-        assertThat(loadedBook.getAuthors()).isNull();
+        assertThat(loadedBook.getAuthors()).isNullOrEmpty();
     }
 
 }
