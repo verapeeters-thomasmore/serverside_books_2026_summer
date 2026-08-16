@@ -78,9 +78,6 @@ public class BookService {
         BookDetailedDTO dtoForConversion = BookDetailedDTO.builder()
                 .id(bookDto.id())
                 .title(bookDto.title())
-                .description(bookDto.description())
-                .publicationYear(bookDto.publicationYear())
-                .language(bookDto.language())
                 .authors(null)
                 .build();
 

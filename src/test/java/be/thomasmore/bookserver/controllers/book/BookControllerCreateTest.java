@@ -33,7 +33,6 @@ public class BookControllerCreateTest extends AbstractIntegrationTest {
         BookDetailedDTO newBookDto = BookDetailedDTO.builder()
                 .id(0)
                 .title(BOOK_TITLE)
-                .description(BOOK_DESCRIPTION)
                 .build();
 
         mockMvc.perform(getMockRequestPost("/api/books", newBookDto))

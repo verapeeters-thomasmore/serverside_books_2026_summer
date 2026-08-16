@@ -12,9 +12,6 @@ import java.util.List;
 public record BookDetailedDTO(
         int id,
         String title,
-        String description,
-        Integer publicationYear,
-        String language,
         List<AuthorDTO> authors
 ) {
     /**
