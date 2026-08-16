@@ -8,7 +8,7 @@ import java.util.List;
  * Immutable data carrier - all fields set at construction.
  * booksSameAuthor is computed and passed at construction time.
  */
-@Builder
+@Builder(toBuilder = true)
 public record BookDetailedDTO(
         int id,
         String title,

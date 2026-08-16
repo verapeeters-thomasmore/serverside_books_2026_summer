@@ -75,9 +75,7 @@ public class BookService {
         }
 
         // Create DTO without authors for entity conversion
-        BookDetailedDTO dtoForConversion = BookDetailedDTO.builder()
-                .id(bookDto.id())
-                .title(bookDto.title())
+        BookDetailedDTO dtoForConversion = bookDto.toBuilder()
                 .authors(null)
                 .build();
 
