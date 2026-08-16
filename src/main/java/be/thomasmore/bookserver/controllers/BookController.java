@@ -81,6 +81,10 @@ public class BookController {
         return bookService.authorsForBook(id);
     }
 
+    @Operation(summary = "delete a book from the database.",
+            description = "Book with the given id is removed from the database. </br>" +
+                    "If the book does not exist, a 404 NOT FOUND status is returned. </br>" +
+                    "When successful, this request returns a 204 NO_CONTENT.")
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
