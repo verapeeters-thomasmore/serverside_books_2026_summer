@@ -32,7 +32,7 @@ insert into BOOK (TITLE, PUBLICATION_YEAR, DESCRIPTION, LANGUAGE) values ('Het v
 insert into BOOK (TITLE, PUBLICATION_YEAR, DESCRIPTION, LANGUAGE) values ('De Midasmoorden', 1996, 'Spannende thriller van Pieter Aspe gesitueerd in Brugge.', 'Nederlands');
 insert into BOOK (TITLE, PUBLICATION_YEAR, DESCRIPTION, LANGUAGE) values ('Kartonnen dozen', 1991, 'Autobiografisch werk over de jeugdliefde van Tom Lanoye.', 'Nederlands');
 insert into BOOK (TITLE, PUBLICATION_YEAR, DESCRIPTION, LANGUAGE) values ('Sprakeloos en stil', 2012, 'Vervolg of gerelateerd werk aan de eerdere familieromans.', 'Nederlands');
-insert into BOOK (TITLE, PUBLICATION_YEAR, DESCRIPTION, LANGUAGE) values ('Lijmen / Het been', 1924, 'Beroemd tweeluik over reclamepraktijken en ethische dilemma\'s.', 'Nederlands');
+insert into BOOK (TITLE, PUBLICATION_YEAR, DESCRIPTION, LANGUAGE) values ('Lijmen / Het been', 1924, 'Beroemd tweeluik over reclamepraktijken en ethische dilemma''s.', 'Nederlands');
 insert into BOOK (TITLE, PUBLICATION_YEAR, DESCRIPTION, LANGUAGE) values ('Villa des Roses', 1913, 'Het debuut van Willem Elsschot over een Parijs pension.', 'Nederlands');
 insert into BOOK (TITLE, PUBLICATION_YEAR, DESCRIPTION, LANGUAGE) values ('Menuet', 1955, 'Modernistische novelle over de relatie tussen drie mensen.', 'Nederlands');
 insert into BOOK (TITLE, PUBLICATION_YEAR, DESCRIPTION, LANGUAGE) values ('De Oostakkerse gedichten', 1955, 'Grensverleggende dichtbundel van Hugo Claus.', 'Nederlands');
