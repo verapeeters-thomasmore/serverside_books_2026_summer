@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 @NoArgsConstructor
 @Data
@@ -16,7 +15,6 @@ public class Member {
     private int id;
 
     @NotBlank(message = "Username should not be blank")
-    @NotNull
     private String username;
 
     private String email;

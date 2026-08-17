@@ -5,6 +5,7 @@ import be.thomasmore.bookserver.model.converters.MemberDTOConverter;
 import be.thomasmore.bookserver.model.dto.AuthenticationDTO;
 import be.thomasmore.bookserver.model.dto.UserDTO;
 import be.thomasmore.bookserver.repositories.MemberRepository;
+import jakarta.validation.Valid;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +51,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public AuthenticationDTO signup(@RequestBody UserDTO userDTO, HttpServletRequest request) throws ServletException {
+    public AuthenticationDTO signup(@Valid @RequestBody UserDTO userDTO, HttpServletRequest request) throws ServletException {
         log.info("##### signup {}", userDTO.username());
 
         if (jdbcUserDetailsManager.userExists(userDTO.username())) {

@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,7 +18,6 @@ public class Genre {
     private int id;
     
     @NotBlank(message = "Genre name should not be blank")
-    @NotNull
     private String name;
 }
 
