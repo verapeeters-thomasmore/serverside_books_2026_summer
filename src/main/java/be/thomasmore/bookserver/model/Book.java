@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 @NoArgsConstructor
@@ -22,7 +21,6 @@ public class Book {
     private int id;
 
     @NotBlank(message = "Book Title should not be blank")
-    @NotNull
     private String title;
 
     @Min(value = 0, message = "price should not be smaller than 0")

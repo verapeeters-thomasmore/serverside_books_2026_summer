@@ -1,5 +1,6 @@
 package be.thomasmore.bookserver.model.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @Builder(toBuilder = true)
 public record BookDetailedDTO(
         int id,
+        @NotBlank(message = "Book Title should not be blank")
         String title,
         List<AuthorDTO> authors
 ) {
