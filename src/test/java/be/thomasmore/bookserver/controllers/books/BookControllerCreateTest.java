@@ -46,28 +46,28 @@ public class BookControllerCreateTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @ExceptionHandler
     @WithMockUser
-    public void createBook_titleCannotBeEmpty() {
+    public void createBook_titleCannotBeEmpty() throws Exception {
         BookDetailedDTO newBookDto = BookDetailedDTO.builder()
                 .id(0)
                 .title(null)
                 .build();
 
-        assertThatThrownBy(() -> mockMvc.perform(getMockRequestPost("/api/books", newBookDto)));
+        mockMvc.perform(getMockRequestPost("/api/books", newBookDto))
+                .andExpect(status().isBadRequest());
         assertThat(bookRepository.count()).isEqualTo(0);
     }
 
     @Test
-    @ExceptionHandler
     @WithMockUser
-    public void createBook_titleCannotBeBlank() {
+    public void createBook_titleCannotBeBlank() throws Exception {
         BookDetailedDTO newBookDto = BookDetailedDTO.builder()
                 .id(0)
                 .title("")
                 .build();
 
-        assertThatThrownBy(() -> mockMvc.perform(getMockRequestPost("/api/books", newBookDto)));
+        mockMvc.perform(getMockRequestPost("/api/books", newBookDto))
+                .andExpect(status().isBadRequest());
         assertThat(bookRepository.count()).isEqualTo(0);
     }
 
